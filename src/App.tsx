@@ -1,24 +1,25 @@
 import React from 'react';
 import logo from './logo.svg';
+import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
+import DanhSachVe from "./components/danh-sach-ve/danh-sach-ve";
+import CapNhatVe from './components/tao-ve/cap-nhat-ve';
 import './App.css';
+import TaoVe from './components/tao-ve/tao-ve';
+import NavBar from './components/navbar/navbar';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavBar/>
+      <Router>
+        <Routes>
+          <Route path='/create' element={<TaoVe/>}/>
+          <Route path='/update' element={<CapNhatVe/>}/>
+          <Route path='/list' element={
+            <DanhSachVe/>}>
+          </Route>
+        </Routes>
+      </Router>
     </div>
   );
 }
