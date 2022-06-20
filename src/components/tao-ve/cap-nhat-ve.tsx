@@ -8,9 +8,12 @@ const CapNhatVe = () => {
     const [comboTicket, setComboTicket]= useState(false);
     return(
         <div className="createticket inner">
-            <h1 className="header"> Tạo gói vé</h1>
-            <label className="ticketname-label">Tên gói vé</label>
-            <input className="ticketname-input" placeholder="Ticket name" onChange={(e: any) => {setTicketName(e.target.value)}}/>
+            <h1 className="header">Cập nhật thông tin gói vé</h1>
+            <label className="update-packid-label">Mã sự kiện</label>
+            <input className="update-packid-input" placeholder="Ticket id" onChange={(e: any) => {setTicketName(e.target.value)}}/>
+
+            <label className="update-packname-label">Tên sự kiện</label>
+            <input className="update-packname-input" placeholder="Ticket name" onChange={(e: any) => {setTicketName(e.target.value)}}/>
 
             <label className="dateuse-label">Ngày áp dụng</label>
             <input className="dateuse-input" type="date" onChange={(e: any) => {setUseDate(e.target.value)}}/>

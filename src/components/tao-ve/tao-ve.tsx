@@ -3,7 +3,9 @@ import { useState } from "react";
 const TaoVe = () => {
     const [ticketName, setTicketName]= useState('');
     const [useDate, setUseDate]= useState('');
+    const [useTime, setUseTime] = useState('')
     const [expireDate, setExpireDate]= useState('');
+    const [expireTime, setExpireTime] = useState('');
     const [singleTicket, setSingleTicket]= useState(true);
     const [comboTicket, setComboTicket]= useState(false);
     return(
@@ -14,11 +16,11 @@ const TaoVe = () => {
 
             <label className="dateuse-label">Ngày áp dụng</label>
             <input className="dateuse-input" type="date" onChange={(e: any) => {setUseDate(e.target.value)}}/>
-            <input className="dateuse-time" type="time" onChange={(e: any) => {setUseDate(e.target.value)}}/>
+            <input className="dateuse-time" type="time" onChange={(e: any) => {setUseTime(e.target.value)}}/>
 
             <label className="expiredate-label">Ngày hết hạn</label>
             <input className="expiredate-input" type="date" onChange={(e: any) => {setExpireDate(e.target.value)}}/>
-            <input className="expiredate-time" type="time" onChange={(e: any) => {setExpireDate(e.target.value)}}/>
+            <input className="expiredate-time" type="time" onChange={(e: any) => {setExpireTime(e.target.value)}}/>
 
             <label className="price-label">Gía vé áp dụng</label>
             <div className="single-ticket">
