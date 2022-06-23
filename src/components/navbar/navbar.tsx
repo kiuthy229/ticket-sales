@@ -33,7 +33,7 @@ const NavBar = () =>{
                     </a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/">
+                    <a className="nav-link" href="/control">
                         Đối soát vé
                     </a>
                 </li>
@@ -43,6 +43,8 @@ const NavBar = () =>{
                 </li>
             </ul>
           </div>
+
+
             
     </div>);
 }

@@ -62,24 +62,37 @@ const DoiSoatVe = () =>{
             </table>
         </div>
         <div className="filter-item">
-            <h1>Lọc vé</h1>
-            <div>
-                <p>Tình trạng đối soát</p>
-                <input type="radio" id="html" name="fav_language" value="Tất cả"/>
-                <label >Tất cả</label><br/>
-                <input type="radio" id="css" name="fav_language" value="Đã đối soát"/>
-                <label >Đã đối soát</label><br/>
-                <input type="radio" id="javascript" name="fav_language" value="Chưa đối soát"/>
-                <label >Chưa đối soát</label>
+            <h1 className="control-filter-heading">Lọc vé</h1>
+            <p className="control-filter">Tình trạng đối soát</p>
+            <div className="control-filter-options">
+            <div className="radio-row">
+                <input type="radio" id="tat-ca" name="fav_language" value="Tất cả"/>
+                <label htmlFor="tat-ca">Tất cả</label>
+            </div>
+            <div className="radio-row">
+                <input type="radio" id="da-doi-soat" name="fav_language" value="Đã đối soát"/>
+                <label htmlFor="da-doi-soat">Đã đối soát</label>
+            </div>
+            <div className="radio-row">
+                <input type="radio" id="chua-doi-soat" name="fav_language" value="Chưa đối soát"/>
+                <label htmlFor="chua-doi-soat">Chưa đối soát</label>
+            </div>
             </div>
             <div>
-                <label>Loại vé</label>
+                <label className="control-ticket-type-filter-label">Loại vé</label>
+                <p className="control-ticket-type-filter-input">Vé cổng</p>
             </div>
             <div>
-                <label>Từ ngày</label>
+                <label className="control-fromdate-filter-label">Từ ngày</label>
+                <input className="control-fromdate-filter-input" type="date"/>
             </div>
             <div>
-                <label>Đến ngày</label>
+                <label className="control-todate-filter-label">Đến ngày</label>
+                <input className="control-todate-filter-input" type="date"/>
+            </div>
+
+            <div>
+                <button className="filter-button">Lọc</button>
             </div>
 
         </div>
