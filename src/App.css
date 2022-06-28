@@ -1,4 +1,8 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap');
+*{
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+}
 .body {
   background-color: #F9F6F4;
 }
@@ -10,10 +14,10 @@
   gap: 24px;
   
   position: absolute;
-  width: 144px;
-  height: 48px;
-  left: 1744px;
-  top: 17px;
+  width: 15%;
+  height: 10%;
+  left: 85%;
+  top: 2%;
 }
 .web-icon{
   position: absolute;
@@ -26,8 +30,8 @@
   flex-grow: 0;
 }
 .avatar{
-  width: 48px;
-  height: 48px;
+  width: 24px;
+  height: 24px;
   border-radius: 30px;
   
   flex: none;
@@ -36,8 +40,8 @@
 }
 .bell{
 
-width: 24px;
-height: 24px;
+width: 18px;
+height: 18px;
 
 opacity: 0.8;
 
@@ -47,8 +51,8 @@ flex-grow: 0;
 }
 .mail{
 
-width: 24px;
-height: 24px;
+width: 18px;
+height: 18px;
 
 opacity: 0.8;
 
@@ -58,15 +62,13 @@ flex-grow: 0;
 }
 .control-filter{
   position: absolute;
-  width: 156px;
-  height: 26px;
-  left: 24px;
-  top: 84px;
+  width: 100%;
+  height: 100%;
+  left: 3%;
+  top: 10%;
 
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 26px;
 
   display: flex;
@@ -77,15 +79,13 @@ flex-grow: 0;
 }
 .control-filter-heading{
   position: absolute;
-  width: 81px;
-  height: 30px;
-  left: 24px;
-  top: 22px;
+  width: 100%;
+  height: auto;
+  left: 3%;
+  top: 2.5%;
 
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 30px;
   display: flex;
   align-items: center;
@@ -100,22 +100,23 @@ flex-grow: 0;
   gap: 12px;
 
   position: absolute;
-  width: 144px;
-  height: 96px;
-  left: 206px;
-  top: 85px;
+  width: auto;
+  height: auto;
+  left: 49%;
+  top: 12.5%;
+  font-size: 15px;
 }
 .control-ticket-type-filter-label{
   position: absolute;
-  width: 58px;
-  height: 26px;
-  left: 24px;
-  top: 205px;
+  width: 100%;
+  height: auto;
+  left: 3%;
+  top: 29%;
 
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 26px;
 
   display: flex;
@@ -131,24 +132,25 @@ flex-grow: 0;
   justify-content: center;
   align-items: center;
   padding: 0px;
+  font-size: 15px;
 
   position: absolute;
-  width: 66px;
-  height: 20px;
-  left: 206px;
-  top: 190px;
+  width: 100%;
+  height: auto;
+  left: 10%;
+  top: 27%;
 }
 .control-fromdate-filter-label{
   position: absolute;
-  width: 66px;
-  height: 26px;
-  left: 24px;
-  top: 255px;
+  width: 100%;
+  height: auto;
+  left: 3%;
+  top: 36%;
 
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 26px;
 
   display: flex;
@@ -167,27 +169,27 @@ flex-grow: 0;
   gap: 28px;
 
   position: absolute;
-  width: 150px;
-  height: 26px;
-  left: 206px;
-  top: 250px;
-
-  /* Grey/3 */
+  position: absolute;
+  width: 30%;
+  height: auto;
+  left: 50%;
+  top: 35.5%;
 
   background: #E0E0E0;
+  border: 0px;
   border-radius: 8px;
 }
 .control-todate-filter-label{
   position: absolute;
-  width: 80px;
-  height: 26px;
-  left: 24px;
-  top: 321px;
+  width: 100%;
+  height: auto;
+  left: 3%;
+  top: 45%;
 
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 26px;
   display: flex;
   align-items: center;
@@ -205,12 +207,13 @@ flex-grow: 0;
   gap: 27px;
 
   position: absolute;
-  width: 150px;
-  height: 26px;
-  left: 206px;
-  top: 314px;
+  width: 30%;
+  height: auto;
+  left: 50%;
+  top: 44.5%;
 
   background: #F7F8FB;
+  border:0px;
   border-radius: 8px;
 }
 
@@ -222,7 +225,7 @@ flex-grow: 0;
   justify-content: center;
   align-items: center;
   padding: 11px 24px;
-  font-size: 18px;
+  font-size: 13px;
   background-color: #FFFFFF;
   color:#FF993C ;
   
@@ -231,10 +234,10 @@ flex-grow: 0;
   line-height: 26px;
 
   position: absolute;
-  width: 160px;
-  height: 48px;
-  left: 136px;
-  top: 386px;
+  width: 27%;
+  height: 5.5%;
+  left: 35%;
+  top: 55%;
 
   border: 2px solid #FF993C;
   border-radius: 8px;
@@ -436,62 +439,57 @@ flex-grow: 0;
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
-  gap: 59px;
 
   position: absolute;
-  width: 100px;
-  height: 572px;
-  left: 20px;
-  top: 30px;
+  width: 10%;
+  height: 30%;
+  left: 0%;
+  top: 3%;
 }
 .search-top{
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10px 16px;
-  gap: 16px;
+  padding: 5px 16px;
 
   position: absolute;
-  left: 321px;
-  top: 17px;
-  width: 470px;
-  height: 40px;
+  left: 13%;
+  top: 3%;
+  width: 30%;
+  height: 6%;
   border:0px;
   background: #EDEDED;
   border-radius: 12px;
 }
 .search-top input{
   position: absolute;
-  width: 470px;
-  height: 48px;
-  left: 7px;
-  top: 5px;
+  width: 90%;
+  height: 90%;
+  left: 3%;
+  top: 2%;
   padding-left: 8px;
   border: 0px;
-  font-size: 17px;
+  font-size: 13px;
   font-style: italic;
-  background: url(images/search.png) no-repeat scroll 450px 15px;
+  background: url(images/search.png) no-repeat scroll 100% 50%;
   background-color: #EDEDED;
 }
 
 
 ul
 {
-  align-items: flex-start;
+  align-items:flex-start;
   position: absolute;
-  left: 10%;
-  top: 100px;
-  flex: none;
+  left: -22%;
+  top: 40%;
   order: 1;
-  flex-grow: 0;
   list-style:none;
   display: flex;
   flex-direction: column;
-  padding: 0px;
-  gap: 8px;
+  gap: 4px;
 
-  width: 252px;
-  height: 289px;
+  width: 150px;
+  height: 20%;
 }
 
 li
@@ -499,50 +497,50 @@ li
     float:left;
 }
 
+.nav-link img{
+  position: relative;
+  padding: 0px 8px 5px 0px;
+  top:5px;
+}
 
-li a
+.nav-link
 {
     display: block;
     color: black;
     text-decoration: none;
-    padding: 14px;
+    padding: 10px;
     text-align: center;
-
+    font-size: 13px;
 }
 
-li a:hover:not(.active) 
+.nav-link.active
 {
     background-color: #EAB126;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 14px;
-    gap: 12px;
+    padding: 10px;
 
-    width: 252px;
-    height: 32px;
+    width: 125px;
+    height: 30px;
 
     background: #FFB800;
     border-radius: 8px;
-
-    /* Inside auto layout */
 
     flex: none;
     order: 1;
     flex-grow: 0;
 }
 
-a.active
-{
-    background-color: #EAB126;
+.nav-link:focus{
+  background-color: #EAB126;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 14px;
-    gap: 12px;
+    padding: 10px;
 
-    width: 252px;
-    height: 32px;
+    width: 125px;
+    height: 30px;
 
     background: #FFB800;
     border-radius: 8px;
@@ -550,65 +548,58 @@ a.active
     flex: none;
     order: 1;
     flex-grow: 0;
-
 }
-li a:focus{
-    background-color: #EAB126;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 14px;
-    gap: 12px;
-
-    width: 252px;
-    height: 32px;
-
-    background: #FFB800;
-    border-radius: 8px;
-
-    flex: none;
-    order: 1;
-    flex-grow: 0;
+.nav-child{
+  position: absolute;
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 13px;
+  text-align: center;
+  font-size: 13px;
+  width: 100%;
+  left:15%;
+  top:585%
 }
 .rendered-item{
   position: absolute;
-  width: 1567px;
-  height: 963px;
-  left: 321px;
-  top: 85px;
+  width: 83%;
+  height: 108%;
+  left: 13%;
+  top:11.5%;
 
   background: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 12px;
 }
 .control-item{
   position: absolute;
-  width: 1097px;
-  height: 963px;
-  left: 321px;
-  top: 85px;
+  width: 58%;
+  height: 108%;
+  left: 13%;
+  top:11.5%;
 
   background: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 12px;
 }
 .filter-item{
   position: absolute;
-  width: 446px;
-  height: 963px;
-  left: 1442px;
-  top: 85px;
+  width: 25%;
+  height: 108%;
+  left: 71.5%;
+  top: 11.5%;
 
   background: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 12px;
 }
 .ticket-list{
   position: absolute;
-  width: 1567px;
-  height: 963px;
-  left: 321px;
-  top: 85px;
+  width: 83%;
+  height: 108%;
+  left: 13%;
+  top:11.5%;
 
   background: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 12px;
 }
 .search{
   display: flex;
@@ -619,13 +610,13 @@ li a:focus{
 
   border:0px;
   position: absolute;
-  width: 446px;
-  height: 30px;
-  left: 24px;
-  top: 120px;
+  width: 30%;
+  height: 3%;
+  left: 1.5%;
+  top: 8%;
 
-  background: url(images/search.png) no-repeat scroll 440px 13px;
-  font-size: 19px;
+  background: url(images/search.png) no-repeat scroll 93% 50%;
+  font-size: 15px;
   background-color: #F7F7F8;
   border-radius: 8px;
 }
@@ -641,13 +632,13 @@ li a:focus{
   gap: 10px;
 
   position: absolute;
-  width: 127px;
-  height: 48px;
-  left: 1225px;
-  top: 120px;
+  width: 10%;
+  height: 5%;
+  left: 75%;
+  top: 8%;
 
   background-color: #FFFFFF;
-  font-size: 16px;
+  font-size: 12px;
   color: #FF993C;
   border: 1px solid #FF993C;
   border-radius: 6px;
@@ -663,13 +654,13 @@ li a:focus{
   gap: 10px;
 
   position: absolute;
-  width: 181px;
-  height: 48px;
-  left: 1362px;
-  top: 120px;
+  width: 10%;
+  height: 5%;
+  left: 86%;
+  top: 8%;
 
   background-color: #FFFFFF;
-  font-size: 16px;
+  font-size: 12px;
   color: #FF993C;
   border: 1px solid #FF993C;
   border-radius: 8px;
@@ -679,14 +670,14 @@ li a:focus{
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 11px 24px;
   gap: 10px;
   border:0px;
   position: absolute;
-  width: 174px;
-  height: 48px;
-  right: 24px;
-  top: 110px;
+  width: 14%;
+  height: 5%;
+  left: 82%;
+  top: 8%;
+  font-size: 12.5px;
   color: #FFFFFF;
   font-weight: 600;
 
@@ -695,15 +686,13 @@ li a:focus{
 }
 .title{
   position: absolute;
-  width: 276px;
-  height: 64px;
-  left: 24px;
-  top: 24px;
+  width: 100%;
+  height: 8%;
+  left: 2%;
+  top: 0%;
 
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 700;
-  font-size: 36px;
+  font-size: 16px;
   line-height: 54px;
 
   display: flex;
@@ -713,18 +702,19 @@ li a:focus{
 }
 .list-table{
   position: absolute;
-  width: 1519px;
-  height: 48px;
-  left: 24px;
-  top: 200px;;
+  width: 95%;
+  height: 30px;
+  left: 1.5%;
+  top: 15%;
+  font-size: 13px;
 
   background: #F1F4F8;
   border-radius: 8px 8px 0px 0px;
 }
 .table-heading{
 
-  width: 1511px;
-  height: 48px;
+  width: 100%;
+  height: 30px;
 
   background: #F1F4F8;
   border-radius: 8px 8px 0px 0px;
@@ -735,8 +725,8 @@ li a:focus{
   flex-grow: 0;
 }
 .table-content{
-  width: 1511px;
-  height: 48px;
+  width: 100%;
+  height: 30px;
 
   background: #FFFFFF;
   text-align: center;
@@ -748,17 +738,18 @@ li a:focus{
 
 .control-table{
   position: absolute;
-  width: 1049px;
-  height: 48px;
-  left: 24px;
-  top: 200px;;
+  width: 95%;
+  height: 30px;
+  left: 1.5%;
+  top: 15%;
+  font-size: 13px;
 
   background: #F1F4F8;
   border-radius: 8px 8px 0px 0px;
 }
 .control-table-heading{
-  width: 1049px;
-  height: 48px;
+  width: 100%;
+  height: 30px;
 
   background: #F1F4F8;
   border-radius: 8px 8px 0px 0px;
@@ -770,7 +761,7 @@ li a:focus{
 }
 .control-table-content{
   width: 1049px;
-  height: 48px;
+  height:30px;
 
   background: #FFFFFF;
   text-align: center;
@@ -784,14 +775,14 @@ li a:focus{
 position: absolute;
 width: 100%;
 height: 30px;
-left: 30%;
-top: 24px;
+left: 42%;
+top: 3%;
 
 
 font-family: 'Montserrat';
 font-style: normal;
 font-weight: 700;
-font-size: 24px;
+font-size: 18px;
 line-height: 30px;
 
 display: flex;
@@ -802,9 +793,11 @@ color: #1E0D03;
 .createticket{
   box-sizing: border-box;
 
-  position: relative;
-  width: 758px;
-  height: 628px;
+  position: absolute;
+  width: 50%;
+  height: 80%;
+  top: -5%;
+  left: 30%;
   margin: auto;
   margin-top: 10%;
 
@@ -815,7 +808,7 @@ color: #1E0D03;
 }
 .filter-ticket{
   box-sizing: border-box;
-  position: relative;
+  position: absolute;
   width: 634px;
   height: 454px;
   margin: auto;
@@ -831,13 +824,13 @@ color: #1E0D03;
   position: absolute;
   width: 103px;
   height: 26px;
-  left: 32px;
-  top: 81px;
+  left:5%;
+  top:18%;
   
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 26px;
   
   display: flex;
@@ -851,10 +844,12 @@ color: #1E0D03;
   box-sizing: border-box;
 
   position: absolute;
-  width: 367px;
-  height: 40px;
+  width: 40%;
+  height: 6%;
   left: 32px;
   top: 112px;
+  padding: 10px;
+  font-size: 13px;
   
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -865,13 +860,13 @@ color: #1E0D03;
 position: absolute;
 width: 117px;
 height: 26px;
-left: 32px;
-top: 177px;
+left:5%;
+top:30%;
 
 font-family: 'Montserrat';
 font-style: normal;
 font-weight: 600;
-font-size: 16px;
+font-size: 13px;
 line-height: 26px;
 
 display: flex;
@@ -893,10 +888,11 @@ opacity: 0.7;
   gap: 10px;
   
   position: absolute;
-  width: 142px;
-  height: 40px;
-  left: 32px;
-  top: 208px;
+  width: 20%;
+  height: 6%;
+  left:5%;
+  top:35%;
+  font-size:13px;
   
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -910,27 +906,27 @@ opacity: 0.7;
   align-items: center;
   padding: 8px 12px;
   gap: 10px;
-
+  font-size: 13px;
   position: absolute;
-  width: 137px;
-  height: 40px;
-  left: 183px;
-  top: 208px;
+  width: 20%;
+  height: 6%;
+  left:26%;
+  top:35%;
 
   border: 1px solid #A5A8B1;
   border-radius: 8px;
 }
 .expiredate-label{
   position: absolute;
-  width: 128px;
+  width: 117px;
   height: 26px;
-  left: 359px;
-  top: 176px;
+  left:55%;
+  top:30%;
   
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 26px;
   
   display: flex;
@@ -951,10 +947,11 @@ opacity: 0.7;
   gap: 10px;
   
   position: absolute;
-  width: 142px;
-  height: 40px;
-  left: 359px;
-  top: 208px;
+  width: 20%;
+  height: 6%;
+  left:55%;
+  top:35%;
+  font-size: 13px;
   
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -970,10 +967,10 @@ opacity: 0.7;
   gap: 10px;
 
   position: absolute;
-  width: 142px;
-  height: 40px;
-  left: 532px;
-  top: 208px;
+  width: 20%;
+  height: 6%;
+  left:76%;
+  top:35%;
 
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -982,13 +979,13 @@ opacity: 0.7;
   position: absolute;
   width: 124px;
   height: 26px;
-  left: 32px;
-  top: 272px;
+  left:5%;
+  top:42%;
 
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 26px;
 
   display: flex;
@@ -1004,12 +1001,12 @@ opacity: 0.7;
   align-items: center;
   padding: 0px;
   gap: 8px;
-
+  font-size: 13px;
   position: absolute;
   width: 391px;
   height: 40px;
-  left: 32px;
-  top: 303px;
+  left:5%;
+  top:45%;
 }
 .combo-ticket{
   display: flex;
@@ -1017,12 +1014,13 @@ opacity: 0.7;
   align-items: center;
   padding: 0px;
   gap: 8px;
+  font-size: 13px;
 
   position: absolute;
   width: 449px;
   height: 40px;
-  left: 32px;
-  top: 355px;
+  left:5%;
+  top:53%;
 }
 .single-ticket-input{
   display: flex;
@@ -1032,7 +1030,7 @@ opacity: 0.7;
   gap: 10px;
   border: 0px;
   width: 100px;
-  height: 16px;
+  height: 13px;
 
   background: #F1F4F8;
   border-radius: 8px;
@@ -1049,7 +1047,7 @@ opacity: 0.7;
   gap: 10px;
 
   width: 100px;
-  height: 16px;
+  height: 13px;
   border:0px;
   background: #F1F4F8;
   border-radius: 8px;
@@ -1062,13 +1060,13 @@ opacity: 0.7;
   position: absolute;
   width: 94px;
   height: 26px;
-  left: 32px;
-  top: 419px;
+  left:5%;
+  top:60%;
   
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 26px;
   
   display: flex;
@@ -1089,10 +1087,10 @@ opacity: 0.7;
   gap: 10px;
   
   position: absolute;
-  width: 176px;
-  height: 40px;
-  left: 32px;
-  top: 450px;
+  width: 40%;
+  height: 8%;
+  left:5%;
+  top:65%;
   
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -1109,9 +1107,9 @@ opacity: 0.7;
   gap: 10px;
   font-weight: 600;
   color: #FF993C;
-  width: 160px;
-  height: 48px;
-  font-size: 16px;
+  width: 40%;
+  height: 40px;
+  font-size: 13px;
   border: 2.5px solid #FF993C;
   border-radius: 8px;
   
@@ -1127,9 +1125,9 @@ opacity: 0.7;
   padding: 11px 24px;
   gap: 10px;
   border:0px;
-  width: 160px;
-  height: 48px;
-  font-size: 16px;
+  width: 40%;
+  height: 40px;
+  font-size: 13px;
   color: #FFFFFF;
   font-weight: 600;
   background: #FF993C;
@@ -1150,8 +1148,8 @@ gap: 24px;
 position: absolute;
 width: 344px;
 height: 48px;
-left: 207px;
-bottom: 32px;
+left: 25%;
+bottom: 10%;
 }
 
 .update-packid-label{
@@ -1232,7 +1230,7 @@ bottom: 32px;
   border: 1px solid #A5A8B1;
   border-radius: 8px;
 }
-.PieChart{
+.piechart-goigiadinh{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1243,28 +1241,101 @@ bottom: 32px;
   position: absolute;
   width: 100px;
   height: 100px;
-  left: 150px;
-  top: 700px;
+  left: 20%;
+  top: 68%;
 }
+.goigiadinh{
+  width: 100%;
+  height: 28px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 28px;
 
+  color: #1E0D03;
+}
+.goisukien{
+  width: 100%;
+  height: 28px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 28px;
+
+  color: #1E0D03;
+}
+.piechart-goisukien{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 12px;
+
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  left: 55%;
+  top: 68%;
+}
+.PieChart input{
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 10px;
+
+  position: absolute;
+  width: 155px;
+  height: 40px;
+  left: 2%;
+  top: 63%;
+
+  background: #FFFFFF;
+  border: 1px solid #E6E0E0;
+  border-radius: 4px;
+}
 .LineChart{
   position: absolute;
-  width: 1400px;
-  height: 200px;
-  left: 24px;
-  top: 115px;
+  width: 95%;
+  height: 1000px;
+  left: 2%;
+  top: 8%;
+}
+.date-linechart{
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+
+  position: absolute;
+  width: 10.5%;
+  height: 6%;
+  left: 85%;
+  top: 10%;
+
+  border: 0.8px solid #E6E0E0;
+  box-shadow: 0px 0px 1px 1px #E6E0E0;
+  border-radius: 4px;
+}
+.LineChart h2{
+  font-size: 20px;
 }
 .doanhthu{
   position: absolute;
   width: 100%;
-  height: 22px;
-  left: 24px;
-  top: calc(50% - 22px/2 + 5.5px);
+  height: 10%;
+  left: 2%;
+  top: 18.3rem;
 
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 15px;
   line-height: 22px;
 
   color: #1E0D03;
@@ -1274,32 +1345,31 @@ bottom: 32px;
 .sotien{
 
   position: absolute;
-  width: 144px;
+  width: 100%;
   height: 30px;
-  left: 24px;
-  top: 510px;
+  left: 2%;
+  top: 20rem;
 
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 20px;
   line-height: 30px;
-
-
   color: #1E0D03;
 }
 .dong{
   position: absolute;
   width: 38px;
   height: 22px;
-  left: 182px;
-  top: calc(50% - 22px/2 + 45.5px);
+  left: 13%;
+  top: 20.1rem;
 
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 17px;
   line-height: 22px;
   color: #1E0D03;
 
 }
+

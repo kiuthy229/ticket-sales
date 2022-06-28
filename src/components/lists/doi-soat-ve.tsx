@@ -10,8 +10,9 @@ interface ITicket {
       id:string,
       ticketNumber:number,
       ticketType:string,
-      useDate:Timestamp,
-      checkinGate:string
+      useDate:string,
+      checkinGate:string,
+      status:string
     }[]
   }
 
@@ -19,6 +20,10 @@ const DoiSoatVe = () =>{
 
     const [tickets, setTickets] = useState<ITicket["ticket"]>([]);
     const usersCollectionRef = collection(db, "tickets");
+    const [stateTerm, setStateTerm] = useState("");
+    const [fromdate, setFromDate] = useState("");
+    const [todate, setToDate] = useState("");
+    const [output, setOutput]=useState<ITicket ["ticket"]>([]);
     useEffect( () => {
 
         const getTickets = async () => {
@@ -27,7 +32,24 @@ const DoiSoatVe = () =>{
         };
     
         getTickets();
+        setOutput(tickets)
       }, []);
+
+    const onFilter = () => {
+        // console.log(Date(todate)-Date(fromdate));
+        setOutput([]);
+        tickets.filter(val=>{
+            if(stateTerm==="Đã đối soát" || stateTerm==="Chưa đối soát"){
+                if(val.status == stateTerm){
+                    setOutput(output=>[...output, val])
+                }
+            }
+            else{
+                setOutput(tickets)
+            }
+
+        })
+    }  
 
     return(
     <div className="">
@@ -45,17 +67,17 @@ const DoiSoatVe = () =>{
                     <th>Ngày sử dụng</th>
                     <th>Tên loại vé</th>
                     <th>Cổng checkin</th>
-                    <th></th>
+                    <th> </th>
                 </tr>
-                {tickets.map((ticket) =>
+                {output.map((ticket) =>
                 <tr className="control-table-content">
                         <td>{ticket.no}</td>
                         <td>{ticket.id}</td>
                         <td>{ticket.ticketNumber}</td>
-                        <td>{ticket.useDate.toDate().toDateString()}</td>
+                        <td>{ticket.useDate}</td>
                         <td>{ticket.ticketType}</td>
                         <td>{ticket.checkinGate}</td>
-                        <td>Chưa đối soát</td>
+                        <td>{ticket.status}</td>
                 </tr> 
                 )}
 
@@ -66,15 +88,15 @@ const DoiSoatVe = () =>{
             <p className="control-filter">Tình trạng đối soát</p>
             <div className="control-filter-options">
             <div className="radio-row">
-                <input type="radio" id="tat-ca" name="fav_language" value="Tất cả"/>
+                <input type="radio" id="tat-ca" name="fav_language" value="Tất cả" onChange={(e)=>setStateTerm(e.target.value)}/>
                 <label htmlFor="tat-ca">Tất cả</label>
             </div>
             <div className="radio-row">
-                <input type="radio" id="da-doi-soat" name="fav_language" value="Đã đối soát"/>
+                <input type="radio" id="da-doi-soat" name="fav_language" value="Đã đối soát" onChange={(e)=>setStateTerm(e.target.value)}/>
                 <label htmlFor="da-doi-soat">Đã đối soát</label>
             </div>
             <div className="radio-row">
-                <input type="radio" id="chua-doi-soat" name="fav_language" value="Chưa đối soát"/>
+                <input type="radio" id="chua-doi-soat" name="fav_language" value="Chưa đối soát" onChange={(e)=>setStateTerm(e.target.value)}/>
                 <label htmlFor="chua-doi-soat">Chưa đối soát</label>
             </div>
             </div>
@@ -84,15 +106,15 @@ const DoiSoatVe = () =>{
             </div>
             <div>
                 <label className="control-fromdate-filter-label">Từ ngày</label>
-                <input className="control-fromdate-filter-input" type="date"/>
+                <input className="control-fromdate-filter-input" type="date" onChange={(e)=>setToDate(e.target.value)}/>
             </div>
             <div>
                 <label className="control-todate-filter-label">Đến ngày</label>
-                <input className="control-todate-filter-input" type="date"/>
+                <input className="control-todate-filter-input" type="date" onChange={(e)=>setFromDate(e.target.value)}/>
             </div>
 
             <div>
-                <button className="filter-button">Lọc</button>
+                <button className="filter-button" onClick={onFilter}>Lọc</button>
             </div>
 
         </div>

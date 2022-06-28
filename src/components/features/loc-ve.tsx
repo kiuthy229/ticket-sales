@@ -1,23 +1,27 @@
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { db } from "../../firebase-config";
 import { Gates } from "./mock";
 
 const LocVe = () => {
     const [ticketName, setTicketName]= useState('');
-    const [useDate, setUseDate]= useState('');
-    const [useTime, setUseTime] = useState('')
-    const [expireDate, setExpireDate]= useState('');
-    const [expireTime, setExpireTime] = useState('');
-    const [singleTicket, setSingleTicket]= useState(true);
-    const [comboTicket, setComboTicket]= useState(false);
+    const [newUseDate, setUseDate]= useState('');
+    const [newUseTime, setUseTime] = useState('')
+    const [newExpireDate, setExpireDate]= useState('');
+    const [newExpireTime, setExpireTime] = useState('');
+    const [newSingleTicket, setSingleTicket]= useState(true);
+    const [newComboTicket, setComboTicket]= useState(false);
+    const [newStatus, setStatus]= useState("")
     const [isCheckAll, setIsCheckAll] = useState(false);
-    const [checked1, setChecked1] = useState(false);
-    const [checked2, setChecked2] = useState(false);
-    const [checked3, setChecked3] = useState(false);
-    const [checked4, setChecked4] = useState(false);
-    const [checked5, setChecked5] = useState(false);
-    const [isCheck, setIsCheck] = useState(["casd","ASdf"]);
+    let [isCheck, setIsCheck] = useState(["",""]);
     const [list, setList] = useState([""]);
     const [selectedOption, setSelectedOption] = useState();
+
+    const updateUser = async (id: string, email:string, name: string, age: number) => {
+        const userDoc = doc(db,"users", id)
+        const newFields ={name: ticketName, useDay: newUseDate, useTime: newUseTime, expireDate: newExpireDate, expireTime: newExpireTime, singleTicket: newSingleTicket, comboTicket: newComboTicket}
+        await updateDoc(userDoc, newFields);
+    }
 
     useEffect(() => {
         setList(Gates);
@@ -66,7 +70,7 @@ const LocVe = () => {
 
                 <input id="chưa sử dụng" type="radio" value="Chưa sử dụng" name="status" checked={selectedOption === "Chưa sử dụng"} onChange={onChangeValue}/>
                 <label htmlFor="chưa sử dụng">Chưa sử dụng</label>
-                
+
                 <input id="hết hạn" type="radio" value="Hết hạn" name="status" checked={selectedOption === "Hết hạn"} onChange={onChangeValue}/>
                 <label htmlFor="hết hạn">Hết hạn</label>
             </div>

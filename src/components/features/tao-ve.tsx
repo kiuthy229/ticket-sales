@@ -1,13 +1,32 @@
+import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
+import { db } from "../../firebase-config";
 
 const TaoVe = () => {
     const [ticketName, setTicketName]= useState('');
-    const [useDate, setUseDate]= useState('');
-    const [useTime, setUseTime] = useState('')
-    const [expireDate, setExpireDate]= useState('');
-    const [expireTime, setExpireTime] = useState('');
-    const [singleTicket, setSingleTicket]= useState(true);
-    const [comboTicket, setComboTicket]= useState(false);
+    const [newUseDate, setUseDate]= useState('');
+    const [newUseTime, setUseTime] = useState('')
+    const [newExpireDate, setExpireDate]= useState('');
+    const [newExpireTime, setExpireTime] = useState('');
+    const [newSingleTicket, setSingleTicket]= useState(true);
+    const [newComboTicket, setComboTicket]= useState(false);
+    const [newStatus, setStatus]= useState("")
+
+    const ticketsCollectionRef = collection(db, "ticket-packs");
+    const createTicket = async (ticketName: string) => {
+        try {
+          await addDoc(ticketsCollectionRef, {packID: "ALT20210501",packName: ticketName, applyDate: newUseDate, useTime: newUseTime, expireDate: newExpireDate, expireTime: newExpireTime, ticketPrice: newSingleTicket, comboPrice: newComboTicket, status:newStatus })
+          console.log("ticket created")
+        } catch (err: any) {
+          console.error(err);
+          alert(err.message);
+        }
+      }
+  
+      const register = () => {
+        createTicket(ticketName);
+      };
+
     return(
         <div className="createticket inner">
             <h1 className="header"> Tạo gói vé</h1>
@@ -26,28 +45,28 @@ const TaoVe = () => {
             <div className="single-ticket">
                 <input type="checkbox" checked/>
                 <label>Vé lẻ (vnđ/vé) với giá</label>
-                <input className="single-ticket-input" type="number"/>
+                <input className="single-ticket-input" type="number" onChange={(e: any) => {setSingleTicket(e.target.value)}}/>
                 <label>/ vé</label>
             </div>
             <div className="combo-ticket">
                 <input type="checkbox" checked/>
                 <label className="combo-ticket-label">Combo vé với giá</label>
-                <input className="combo-ticket-input" type="number"/>
+                <input className="combo-ticket-input" type="number" onChange={(e: any) => {setComboTicket(e.target.value)}}/>
                 <label>/ vé</label>
             </div>
 
             <div>
                 <label className="label-status">Tình trạng</label>
-                <select className="status">
-                    <option value={0}>Đang áp dụng</option>
-                    <option value={1}>Chưa áp dụng</option>
+                <select className="status" onChange={(event) => setStatus(event.target.value)}>
+                    <option value="Đang áp dụng">Đang áp dụng</option>
+                    <option value="Chưa áp dụng">Chưa áp dụng</option>
                 </select>
             </div>
             
 
             <div className="button-holder">
                 <button className="huy">Hủy</button>
-                <button className="luu">Lưu</button>
+                <button className="luu" onClick={register}>Lưu</button>
             </div>
 
         </div>

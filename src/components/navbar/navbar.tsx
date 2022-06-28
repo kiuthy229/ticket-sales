@@ -2,8 +2,14 @@ import avatar from '../../images/avatar1.png';
 import bell from '../../images/fi_bell.png';
 import mail from '../../images/fi_mail.png';
 import webicon from '../../images/insight.png'
-const NavBar = () =>{
-    //const avatar = require('../../../public/avatar1.png');
+import home from '../../images/home.png';
+import manage from '../../images/manage.png';
+import control from '../../images/control.png';
+import settings from '../../images/settings.png';
+import { NavLink, Link } from 'react-router-dom';
+
+const NavBar = (props: any) =>{
+    const { location } = props;
     return(
     <div>
         
@@ -12,36 +18,45 @@ const NavBar = () =>{
         </div>
 
         <div className='top-icon'>
-            <img src={mail}/>
-            <img src={bell}/>
-            <img src={avatar} />
+            <img style={{width:'11%', height:'32%'}} src={mail}/>
+            <img style={{width:'11%', height:'32%'}} src={bell}/>
+            <img style={{width:'20%', height:'60%'}} src={avatar} />
         </div>
           {/* <a className='avatar'><img src='../../../public/avatar.jpg'></img></a> */}
           <div className="menu">
             <div className='web-icon'>
-                <img src={webicon}/>
+                <img style={{width:'100%', height:'30%'}} src={webicon}/>
             </div>
             <ul className="navbar-nav">
                 <li className="nav-item active">
-                    <a className="nav-link" href="/dashboard">
+                    <NavLink className="nav-link home" to="/dashboard">
+                    <img src={home}/>
                         Trang Chủ
-                    </a>
+                    </NavLink>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/list">
+                    <NavLink className="nav-link manage" to="/list">
+                    <img src={manage}/>
                         Quản lý vé
-                    </a>
+                    </NavLink>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/control">
+                    <NavLink className="nav-link control" to="/control">
+                    <img src={control}/>
                         Đối soát vé
-                    </a>
+                    </NavLink>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link disabled"
-                        href="#">Cài đặt</a>
+                    <NavLink className="nav-link settings" to="/pack-list">
+                    <img src={settings}/>
+                    Cài đặt</NavLink>
+                    <NavLink className='nav-child' to="/pack-list">Gói dịch vụ</NavLink>
                 </li>
+                
+                
+                
             </ul>
+
           </div>
 
 
