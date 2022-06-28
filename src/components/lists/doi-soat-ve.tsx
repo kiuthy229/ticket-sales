@@ -1,6 +1,8 @@
+import { Typography } from "@material-ui/core";
 import { render } from "@testing-library/react"
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { couldStartTrivia } from "typescript";
 import { db } from "../../firebase-config";
 import filter from "../../images/filter.png";
 
@@ -25,14 +27,12 @@ const DoiSoatVe = () =>{
     const [todate, setToDate] = useState("");
     const [output, setOutput]=useState<ITicket ["ticket"]>([]);
     useEffect( () => {
-
         const getTickets = async () => {
           const res = await getDocs(usersCollectionRef)
           .then( (res) => setTickets(res.docs.map((doc: any) => ({...doc.data(), key: doc.id}))))
         };
     
         getTickets();
-        setOutput(tickets)
       }, []);
 
     const onFilter = () => {
@@ -47,10 +47,20 @@ const DoiSoatVe = () =>{
             else{
                 setOutput(tickets)
             }
-
         })
     }  
 
+    const chuadoisoat = {
+        color: " #A5A8B1",
+        fontSize:"13px",
+        fontStyle: "italic"
+    }
+    
+    const dadoisoat = {
+        color: "#FD5959",
+        fontSize:"13px",
+        fontStyle: "italic"
+    }
     return(
     <div className="">
         <div className="control-item">
@@ -59,29 +69,34 @@ const DoiSoatVe = () =>{
             <input className="search" type="text" placeholder="Tìm bằng số vé" />
             <button className="doisoat">Chốt đối soát</button>
 
-            <table className="control-table">
-                <tr className="control-table-heading">
-                    <th>STT</th>
-                    <th>Booking code</th>
-                    <th>Số vé</th>
-                    <th>Ngày sử dụng</th>
-                    <th>Tên loại vé</th>
-                    <th>Cổng checkin</th>
-                    <th> </th>
-                </tr>
-                {output.map((ticket) =>
-                <tr className="control-table-content">
-                        <td>{ticket.no}</td>
-                        <td>{ticket.id}</td>
-                        <td>{ticket.ticketNumber}</td>
-                        <td>{ticket.useDate}</td>
-                        <td>{ticket.ticketType}</td>
-                        <td>{ticket.checkinGate}</td>
-                        <td>{ticket.status}</td>
-                </tr> 
-                )}
-
-            </table>
+            
+                <table className="control-table">
+                        <tr className="control-table-heading">
+                            <th>STT</th>
+                            <th>Booking code</th>
+                            <th>Số vé</th>
+                            <th>Ngày sử dụng</th>
+                            <th>Tên loại vé</th>
+                            <th>Cổng checkin</th>
+                            <th className="invisible">Trạng thái</th>
+                        </tr>
+                        {output.map((ticket) =>
+                        <tr className="control-table-content">
+                                <td>{ticket.no}</td>
+                                <td>{ticket.id}</td>
+                                <td>{ticket.ticketNumber}</td>
+                                <td>{ticket.useDate}</td>
+                                <td>{ticket.ticketType}</td>
+                                <td>{ticket.checkinGate}</td>
+                                <td>
+                                    { ticket.status === "Chưa đối soát" &&
+                                    <Typography style={chuadoisoat}>{ticket.status}</Typography>}
+                                    { ticket.status === "Đã đối soát" &&
+                                    <Typography style={dadoisoat}>{ticket.status}</Typography>}
+                                </td>
+                        </tr> 
+                        )}
+                </table>
         </div>
         <div className="filter-item">
             <h1 className="control-filter-heading">Lọc vé</h1>

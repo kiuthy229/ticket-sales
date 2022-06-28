@@ -3,6 +3,11 @@ import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import filter from "../../images/filter.png";
+import edit from "../../images/edit.png";
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  Typography,
+} from '@material-ui/core';
 
 interface IPack {
     pack:{
@@ -33,6 +38,48 @@ const DanhSachGoiVe = () =>{
         console.log(tickets)
       }, []);
 
+    const dangapdung = {
+      backgroundColor: "#DEF7E0",
+      border: "0.5px solid #03AC00",
+      borderRadius: "6px",
+      width: "70%",
+      height: "60%",
+      fontSize: "12px",
+      display: "flex",
+      justifyContent:"center",
+      alignItems: "center",
+      color:"#03AC00",
+      padding:"3px"
+    };
+
+    const chuaapdung = {
+      backgroundColor: "#F8EBE8",
+      border: "0.5px solid #FD5959",
+      borderRadius: "6px",
+      width: "70%",
+      height: "60%",
+      fontSize: "12px",
+      display: "flex",
+      justifyContent:"center",
+      alignItems: "center",
+      color:"#FD5959",
+      padding:"3px"
+    }
+
+    const tat = {
+      backgroundColor: "#F8EBE8",
+      border: "0.5px solid #FD5959",
+      borderRadius: "6px",
+      width: "70%",
+      height: "60%",
+      fontSize: "12px",
+      display: "flex",
+      justifyContent:"center",
+      alignItems: "center",
+      color:"#FD5959",
+      padding:"3px"
+    }
+
     return(
     <div className="ticket-list rendered-item">
         <h1 className="title">Danh sách gói vé</h1>
@@ -44,18 +91,18 @@ const DanhSachGoiVe = () =>{
         </button>
         <button className="csv">Xuất file (.csv)</button>
 
-        <table className="list-table">
-            <tr className="table-heading">
-                <th>STT</th>
-                <th>Mã gói</th>
-                <th>Tên gói vé</th>
-                <th>Ngày áp dụng</th>
-                <th>Ngày hết hạn</th>
-                <th>Gía vé (VNĐ)</th>
-                <th>Gía combo</th>
-                <th>Tình trạng</th>
-                <th> </th>
-            </tr>
+          <table className="list-table">
+              <tr  className="table-heading"> 
+                  <th>STT</th>
+                  <th>Mã gói</th>
+                  <th>Tên gói vé</th>
+                  <th>Ngày áp dụng</th>
+                  <th>Ngày hết hạn</th>
+                  <th>Gía vé (VNĐ)</th>
+                  <th>Gía combo</th>
+                  <th>Tình trạng</th>
+                  <th> </th>
+              </tr>
             {tickets.map((ticket) =>
                 <tr className="table-content">
                     <td>{ticket.no}</td>
@@ -66,12 +113,24 @@ const DanhSachGoiVe = () =>{
                     <td>{ticket.ticketPrice}</td>
                     {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
                     <td>{ticket.comboPrice}</td>
-                    <td>{ticket.status}</td>
-                    <td><button>Cập nhật</button></td>
+                    <td>
+                      { ticket.status === "Đang áp dụng" &&
+                      <Typography style={dangapdung}>{ticket.status}</Typography>}
+                      { ticket.status === "Chưa áp dụng" &&
+                      <Typography style={chuaapdung}>{ticket.status}</Typography>}
+                      { ticket.status === "Tắt" &&
+                      <Typography style={tat}>{ticket.status}</Typography>}
+                    </td>
+                    <td>
+                      <button className="btn-update">
+                        <img src={edit}/>
+                        Cập nhật
+                      </button>
+                    </td>
                 </tr> 
             )}
 
-        </table>
+          </table>
     </div>
     );
 }
