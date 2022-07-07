@@ -18,9 +18,9 @@ const NavBar = (props: any) =>{
         </div>
 
         <div className='top-icon'>
-            <img style={{width:'11%', height:'32%'}} src={mail}/>
-            <img style={{width:'11%', height:'32%'}} src={bell}/>
-            <img style={{width:'20%', height:'60%'}} src={avatar} />
+            <img style={{width:'24px', height:'24px'}} src={mail}/>
+            <img style={{width:'24px', height:'24px'}} src={bell}/>
+            <img style={{width:'32px', height:'32px'}} src={avatar} />
         </div>
           {/* <a className='avatar'><img src='../../../public/avatar.jpg'></img></a> */}
           <div className="menu">

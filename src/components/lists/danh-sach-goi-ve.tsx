@@ -8,6 +8,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Typography,
 } from '@material-ui/core';
+import greenDot from "../../images/greenDot.png";
+import redDot from "../../images/redDot.png";
+import TaoVe from "../features/tao-ve";
+import CapNhatVe from "../features/cap-nhat-ve";
 
 interface IPack {
     pack:{
@@ -25,6 +29,8 @@ interface IPack {
 const DanhSachGoiVe = () =>{
 
     const [tickets, setTickets] = useState<IPack["pack"]>([]);
+    const [openCreate,setOpenCreate] = useState(false)
+    const [openUpdate,setOpenUpdate] = useState(false)
     const packsCollectionRef = collection(db, "ticket-packs");
     useEffect( () => {
 
@@ -38,46 +44,54 @@ const DanhSachGoiVe = () =>{
         console.log(tickets)
       }, []);
 
+      const togglePopupCreate = () => {
+        setOpenCreate(!openCreate);
+      }
+
+      const togglePopupUpdate= () => {
+        setOpenUpdate(!openUpdate);
+      }
+
     const dangapdung = {
       backgroundColor: "#DEF7E0",
       border: "0.5px solid #03AC00",
-      borderRadius: "6px",
+      borderRadius: "4px",
       width: "70%",
       height: "60%",
       fontSize: "12px",
       display: "flex",
-      justifyContent:"center",
+      justifyContent:"flex-start",
       alignItems: "center",
       color:"#03AC00",
-      padding:"3px"
+      padding:"3px 2px 2px 10px",
     };
 
     const chuaapdung = {
       backgroundColor: "#F8EBE8",
       border: "0.5px solid #FD5959",
-      borderRadius: "6px",
+      borderRadius: "4px",
       width: "70%",
       height: "60%",
       fontSize: "12px",
       display: "flex",
-      justifyContent:"center",
+      justifyContent:"flex-start",
       alignItems: "center",
       color:"#FD5959",
-      padding:"3px"
+      padding:"3px 2px 2px 10px"
     }
 
     const tat = {
       backgroundColor: "#F8EBE8",
       border: "0.5px solid #FD5959",
-      borderRadius: "6px",
-      width: "70%",
+      borderRadius: "4px",
+      width: "35%",
       height: "60%",
       fontSize: "12px",
       display: "flex",
-      justifyContent:"center",
+      justifyContent:"flex-start",
       alignItems: "center",
       color:"#FD5959",
-      padding:"3px"
+      padding:"3px 2px 2px 10px"
     }
 
     return(
@@ -85,12 +99,15 @@ const DanhSachGoiVe = () =>{
         <h1 className="title">Danh sách gói vé</h1>
 
         <input className="search" type="text" placeholder="Tìm bằng số vé" />
-        <button className="locve">
+        {/* <button className="locve">
             <img src={filter}/>
             Lọc vé
+        </button> */}
+        <button className="taove" onClick={()=>setOpenCreate(true)}>
+            Thêm gói vé
         </button>
         <button className="csv">Xuất file (.csv)</button>
-
+          
           <table className="list-table">
               <tr  className="table-heading"> 
                   <th>STT</th>
@@ -115,14 +132,23 @@ const DanhSachGoiVe = () =>{
                     <td>{ticket.comboPrice}</td>
                     <td>
                       { ticket.status === "Đang áp dụng" &&
-                      <Typography style={dangapdung}>{ticket.status}</Typography>}
+                      <Typography style={dangapdung}>
+                        <img src={greenDot} className="dots"/>
+                        {ticket.status}
+                      </Typography>}
                       { ticket.status === "Chưa áp dụng" &&
-                      <Typography style={chuaapdung}>{ticket.status}</Typography>}
+                      <Typography style={chuaapdung}>
+                        <img src={redDot} className="dots"/>
+                        {ticket.status}
+                      </Typography>}
                       { ticket.status === "Tắt" &&
-                      <Typography style={tat}>{ticket.status}</Typography>}
+                      <Typography style={tat}>
+                        <img src={redDot} className="dots"/>
+                        {ticket.status}
+                      </Typography>}
                     </td>
                     <td>
-                      <button className="btn-update">
+                      <button className="btn-update" onClick={()=>setOpenUpdate(true)}>
                         <img src={edit}/>
                         Cập nhật
                       </button>
@@ -131,6 +157,13 @@ const DanhSachGoiVe = () =>{
             )}
 
           </table>
+          {!openUpdate && openCreate &&
+              <TaoVe onClose={togglePopupCreate}/>
+          }
+          {!openCreate && openUpdate &&
+            <CapNhatVe onClose={togglePopupUpdate}/>
+          }
+
     </div>
     );
 }

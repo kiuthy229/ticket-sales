@@ -1,8 +1,9 @@
 import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 
-const TaoVe = () => {
+const TaoVe = (props:any) => {
+
     const [ticketName, setTicketName]= useState('');
     const [newUseDate, setUseDate]= useState('');
     const [newUseTime, setUseTime] = useState('')
@@ -11,6 +12,13 @@ const TaoVe = () => {
     const [newSingleTicket, setSingleTicket]= useState(true);
     const [newComboTicket, setComboTicket]= useState(false);
     const [newStatus, setStatus]= useState("")
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [ticketsPerPage,setTicketPerPage] =useState(15)
+
+    useEffect(()=>{
+        
+    })
 
     const ticketsCollectionRef = collection(db, "ticket-packs");
     const createTicket = async (ticketName: string) => {
@@ -65,7 +73,7 @@ const TaoVe = () => {
             
 
             <div className="button-holder">
-                <button className="huy">Hủy</button>
+                <button className="huy" onClick={props.onClose}>Hủy</button>
                 <button className="luu" onClick={register}>Lưu</button>
             </div>
 

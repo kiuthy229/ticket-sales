@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { Gates } from "./mock";
 
-const LocVe = () => {
+const LocVe = (props:any) => {
     const [ticketName, setTicketName]= useState('');
     const [newUseDate, setUseDate]= useState('');
     const [newUseTime, setUseTime] = useState('')
@@ -50,7 +50,7 @@ const LocVe = () => {
 
 
     return(
-        <div className="filter-ticket inner">
+        <div className="filter-ticket">
             <h1 className="filter-heading">Lọc vé</h1>
 
             <label className="fromdate-label">Từ ngày</label>
@@ -98,7 +98,7 @@ const LocVe = () => {
             
 
             <div className="button-holder">
-                <button className="loc">Lọc</button>
+                <button className="loc" onClick={props.onClose}>Lọc</button>
             </div>
 
         </div>

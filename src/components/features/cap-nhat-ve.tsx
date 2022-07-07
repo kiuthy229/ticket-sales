@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const CapNhatVe = () => {
+const CapNhatVe = (props:any) => {
     const [ticketName, setTicketName]= useState('');
     const [useDate, setUseDate]= useState('');
     const [expireDate, setExpireDate]= useState('');
@@ -8,7 +8,7 @@ const CapNhatVe = () => {
     const [comboTicket, setComboTicket]= useState(false);
     return(
         <div className="createticket inner">
-            <h1 className="header">Cập nhật thông tin gói vé</h1>
+            <h1 className="header-update">Cập nhật thông tin gói vé</h1>
             <label className="update-packid-label">Mã sự kiện</label>
             <input className="update-packid-input" placeholder="Ticket id" onChange={(e: any) => {setTicketName(e.target.value)}}/>
 
@@ -47,7 +47,7 @@ const CapNhatVe = () => {
             
 
             <div className="button-holder">
-                <button className="huy">Hủy</button>
+                <button className="huy" onClick={props.onClose}>Hủy</button>
                 <button className="luu">Lưu</button>
             </div>
 

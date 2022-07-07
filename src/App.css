@@ -16,7 +16,7 @@
   position: absolute;
   width: 15%;
   height: 10%;
-  left: 85%;
+  left: 86.5%;
   top: 2%;
 }
 .web-icon{
@@ -684,6 +684,25 @@ li
   background: #FF993C;
   border-radius: 8px;
 }
+.taove{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border:0px;
+  position: absolute;
+  width: 10%;
+  height: 5%;
+  left: 75%;
+  top: 8%;
+  font-size: 12.5px;
+  color: #FFFFFF;
+  font-weight: 600;
+
+  background: #FF993C;
+  border-radius: 8px;
+}
 .title{
   position: absolute;
   width: 100%;
@@ -777,6 +796,23 @@ align-items: center;
 
 color: #1E0D03;
 }
+.header-update{
+
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  left: 30%;
+  top: 3%;
+  
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 30px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  }
 .createticket{
   box-sizing: border-box;
 
@@ -796,6 +832,8 @@ color: #1E0D03;
 .filter-ticket{
   box-sizing: border-box;
   position: absolute;
+  top:-5%;
+  left:22%;
   width: 634px;
   height: 454px;
   margin: auto;
@@ -1144,16 +1182,11 @@ bottom: 10%;
   width: 89px;
   height: 26px;
   left: 32px;
-  top: 81px;
-  
-  /* 16 semibold */
-  
-  font-family: 'Montserrat';
-  font-style: normal;
+  top: 17%;
+
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 26px;
-  /* identical to box height, or 162% */
   
   display: flex;
   align-items: center;
@@ -1168,8 +1201,8 @@ bottom: 10%;
   box-sizing: border-box;
 
   position: absolute;
-  width: 245px;
-  height: 40px;
+  width: 41%;
+  height: 32px;
   left: 32px;
   top: 112px;
   
@@ -1182,15 +1215,11 @@ bottom: 10%;
   position: absolute;
   width: 103px;
   height: 26px;
-  left: 359px;
-  top: 81px;
+  left: 55%;
+  top: 17%;
   
-  /* 16 semibold */
-  
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 26px;
   /* identical to box height, or 162% */
   
@@ -1207,9 +1236,9 @@ bottom: 10%;
   box-sizing: border-box;
 
   position: absolute;
-  width: 367px;
-  height: 40px;
-  left: 359px;
+  width: 41%;
+  height: 32px;
+  left: 55%;
   top: 112px;
   
   /* Grey/4 */
@@ -1385,4 +1414,10 @@ bottom: 10%;
 
 .invisible {
   visibility: hidden;
+}
+
+.dots{
+  width: 6px;
+  height: 6px;
+  padding-right:3px;
 }

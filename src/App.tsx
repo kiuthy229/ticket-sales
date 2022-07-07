@@ -18,8 +18,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <NavBar></NavBar>
-        <Routes>
-
+        <Routes>   
           <Route path='/filter' element={<LocVe/>}/>
           <Route path='/control' element={<DoiSoatVe/>}/>
           <Route path='/pack-list' element={<DanhSachGoiVe/>}/>

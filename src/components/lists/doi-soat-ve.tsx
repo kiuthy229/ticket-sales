@@ -1,5 +1,7 @@
+import { validateCallback } from "@firebase/util";
 import { Typography } from "@material-ui/core";
 import { render } from "@testing-library/react"
+import { sort } from "d3";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { couldStartTrivia } from "typescript";
@@ -14,7 +16,7 @@ interface ITicket {
       ticketType:string,
       useDate:string,
       checkinGate:string,
-      status:string
+      controlStatus:string
     }[]
   }
 
@@ -26,6 +28,10 @@ const DoiSoatVe = () =>{
     const [fromdate, setFromDate] = useState("");
     const [todate, setToDate] = useState("");
     const [output, setOutput]=useState<ITicket ["ticket"]>([]);
+    var [outputDate, setOutputDate] = useState<ITicket ["ticket"]>([]);
+    var [arrDates, setArrayDates] = useState<string[]>([])
+    var [filter, setOnFilter]=useState(false)
+    const dates = ["2022-6-12","2022-6-13","2022-16-14","2022-6-15"]
     useEffect( () => {
         const getTickets = async () => {
           const res = await getDocs(usersCollectionRef)
@@ -36,19 +42,67 @@ const DoiSoatVe = () =>{
       }, []);
 
     const onFilter = () => {
-        // console.log(Date(todate)-Date(fromdate));
+        setOnFilter(true)
         setOutput([]);
-        tickets.filter(val=>{
-            if(stateTerm==="Đã đối soát" || stateTerm==="Chưa đối soát"){
-                if(val.status == stateTerm){
-                    setOutput(output=>[...output, val])
+        var chosenStartDay = Number(fromdate.slice(8,10))
+        var chosenStartMonth = Number(fromdate.slice(5,7))
+
+        var chosenEndDay = Number(todate.slice(8,10))
+        var chosenEndMonth = Number(todate.slice(5,7))
+        setOutputDate([]);
+
+        tickets.filter(val=>{ 
+            if (chosenStartMonth === chosenEndMonth){
+                //tinh ngay trong cung2 thang
+                setOutputDate([]);
+                if (Number(val.useDate.slice(5,7)) !== chosenStartMonth && chosenEndMonth !== Number(val.useDate.slice(5,7))){
+                    console.log("out of scope 1")
+                }
+                if ((Number(val.useDate.slice(5,7)) == chosenStartMonth) 
+                    && (Number(val.useDate.slice(8,10)) >= chosenStartDay && Number(val.useDate.slice(8,10)) <= chosenEndDay)){
+                        //console.log(Number(val.useDate.slice(5,7)), "and", chosenEndMonth)
+                        outputDate.push(val)
                 }
             }
-            else{
-                setOutput(tickets)
+            else if (chosenStartMonth !== chosenEndMonth){
+                setOutputDate([]);
+                if (Number(val.useDate.slice(5,7)) !== chosenStartMonth && chosenEndMonth !== Number(val.useDate.slice(5,7))){
+                    console.log("out of scope")
+                }
+                else if(Number(val.useDate.slice(5,7)) >= chosenStartMonth && Number(val.useDate.slice(5,7))<=chosenEndMonth){
+                        if(Number(val.useDate.slice(8,10)) >= chosenStartDay){
+                            outputDate.push(val)
+                            if (Number(val.useDate.slice(8,10)) > chosenEndDay && Number(val.useDate.slice(5,7)) === chosenEndMonth){
+                                var outScopeDate = Number(val.useDate.slice(8,10));
+                                for (var i = 0; i < outputDate.length; i++) {
+                                    if (Number(outputDate[i].useDate.slice(8,10)) == outScopeDate) {
+                                        var spliced = outputDate.splice(i, 1);
+                                    }
+                                }
+                            }
+                        }
+                }
+                else {
+                    console.log("no results because the date chosen is out of scope")
+                }
             }
         })
-    }  
+
+        //console.log(outputDate)
+
+        outputDate.filter(val=>{
+                if ( stateTerm === "Tất cả"){
+                    setOutput(outputDate)
+                }
+                else{
+                    if(val.controlStatus === stateTerm){
+                            setOutput(outputDate=>[...outputDate, val])
+                            //console.log(val)
+                    }
+                }            
+        })
+        
+    } 
 
     const chuadoisoat = {
         color: " #A5A8B1",
@@ -80,22 +134,43 @@ const DoiSoatVe = () =>{
                             <th>Cổng checkin</th>
                             <th className="invisible">Trạng thái</th>
                         </tr>
-                        {output.map((ticket) =>
-                        <tr className="control-table-content">
-                                <td>{ticket.no}</td>
-                                <td>{ticket.id}</td>
-                                <td>{ticket.ticketNumber}</td>
-                                <td>{ticket.useDate}</td>
-                                <td>{ticket.ticketType}</td>
-                                <td>{ticket.checkinGate}</td>
-                                <td>
-                                    { ticket.status === "Chưa đối soát" &&
-                                    <Typography style={chuadoisoat}>{ticket.status}</Typography>}
-                                    { ticket.status === "Đã đối soát" &&
-                                    <Typography style={dadoisoat}>{ticket.status}</Typography>}
-                                </td>
-                        </tr> 
+                        {filter==false &&
+                            tickets.map((ticket) =>
+                            <tr className="control-table-content">
+                                    <td>{ticket.no}</td>
+                                    <td>{ticket.id}</td>
+                                    <td>{ticket.ticketNumber}</td>
+                                    <td>{ticket.useDate}</td>
+                                    <td>{ticket.ticketType}</td>
+                                    <td>{ticket.checkinGate}</td>
+                                    <td>
+                                        { ticket.controlStatus === "Chưa đối soát" &&
+                                        <Typography style={chuadoisoat}>{ticket.controlStatus}</Typography>}
+                                        { ticket.controlStatus === "Đã đối soát" &&
+                                        <Typography style={dadoisoat}>{ticket.controlStatus}</Typography>}
+                                    </td>
+                            </tr> 
                         )}
+
+                        {output && 
+                            output.map((ticket) =>
+                                <tr className="control-table-content">
+                                    <td>{ticket.no}</td>
+                                    <td>{ticket.id}</td>
+                                    <td>{ticket.ticketNumber}</td>
+                                    <td>{ticket.useDate}</td>
+                                    <td>{ticket.ticketType}</td>
+                                    <td>{ticket.checkinGate}</td>
+                                    <td>
+                                        { ticket.controlStatus === "Chưa đối soát" &&
+                                        <Typography style={chuadoisoat}>{ticket.controlStatus}</Typography>}
+                                        { ticket.controlStatus === "Đã đối soát" &&
+                                        <Typography style={dadoisoat}>{ticket.controlStatus}</Typography>}
+                                    </td>
+                                    </tr> 
+                        )}
+                    
+
                 </table>
         </div>
         <div className="filter-item">
@@ -121,11 +196,11 @@ const DoiSoatVe = () =>{
             </div>
             <div>
                 <label className="control-fromdate-filter-label">Từ ngày</label>
-                <input className="control-fromdate-filter-input" type="date" onChange={(e)=>setToDate(e.target.value)}/>
+                <input className="control-fromdate-filter-input" type="date" onChange={(e)=>setFromDate(e.target.value)}/>
             </div>
             <div>
                 <label className="control-todate-filter-label">Đến ngày</label>
-                <input className="control-todate-filter-input" type="date" onChange={(e)=>setFromDate(e.target.value)}/>
+                <input className="control-todate-filter-input" type="date" onChange={(e)=>setToDate(e.target.value)}/>
             </div>
 
             <div>
