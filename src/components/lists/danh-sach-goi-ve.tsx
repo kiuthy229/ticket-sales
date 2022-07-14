@@ -6,24 +6,49 @@ import filter from "../../images/filter.png";
 import edit from "../../images/edit.png";
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Table,
   Typography,
 } from '@material-ui/core';
 import greenDot from "../../images/greenDot.png";
 import redDot from "../../images/redDot.png";
 import TaoVe from "../features/tao-ve";
 import CapNhatVe from "../features/cap-nhat-ve";
+import previous from "../../images/previous.png";
+import next from "../../images/next.png";
+import {CSVLink} from "react-csv"
+
 
 interface IPack {
     pack:{
+      id:string,
       no:number,
       packID:string,
       packName:string,
       applyDate:string,
+      applyTime:string,
       ticketPrice: number,
       comboPrice:number,
+      comboQuantity:number,
       expireDate:string,
+      expireTime:string,
       status:string,
     }[]
+  }
+  type Pack ={
+    pack:{
+      id:string,
+      no:number,
+      packID:string,
+      packName:string,
+      applyDate:string,
+      applyTime:string,
+      ticketPrice: number,
+      comboPrice:number,
+      comboQuantity:number,
+      expireDate:string,
+      expireTime:string,
+      status:string,
+    }
   }
 
 const DanhSachGoiVe = () =>{
@@ -32,25 +57,62 @@ const DanhSachGoiVe = () =>{
     const [openCreate,setOpenCreate] = useState(false)
     const [openUpdate,setOpenUpdate] = useState(false)
     const packsCollectionRef = collection(db, "ticket-packs");
+    const [ticketId, setTicketId] = useState<number>(0)
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
+    const [ticketsPerPage] = useState(10);
+
+    const pageNumbers =[];
+
+
     useEffect( () => {
 
         const getTickets = async () => {
           const res = await getDocs(packsCollectionRef)
-          .then( (res) => setTickets(res.docs.map((doc: any) => ({...doc.data(), key: doc.id}))))
+          .then( (res) => setTickets(res.docs.map((doc: any) => ({...doc.data(), id: doc.id}))))
         };
     
         getTickets();
-
-        console.log(tickets)
       }, []);
 
-      const togglePopupCreate = () => {
-        setOpenCreate(!openCreate);
-      }
+    const togglePopupCreate = () => {
+      setOpenCreate(!openCreate);
+    }
 
-      const togglePopupUpdate= () => {
-        setOpenUpdate(!openUpdate);
-      }
+    const togglePopupUpdate= () => {
+      setOpenUpdate(!openUpdate);
+    }
+
+    const openPopupUpdate = (ticketID:any) => {
+      setOpenUpdate(true);
+      console.log(ticketID)
+      setTicketId(ticketID);
+    }
+
+    const headers = [
+      {label:"no", key:"no"},
+      {label:"packID", key:"packID"},
+      {label:"packName", key:"packName"},
+      {label:"applyDate", key:"applyDate"},
+      {label:"expireDate", key:"expireDate"},
+      {label:"ticketPrice", key:"ticketPrice"},
+      {label:"status", key:"status"},
+    ]
+
+    const csvLink = {
+      filename: "file.csv",
+      headers: headers,
+      data: tickets
+    }
+
+    const indexOfLastPost = currentPage * ticketsPerPage;
+    const indexOfFirstPost = indexOfLastPost - ticketsPerPage;
+    const currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
+    
+    for (let i = 1; i <= Math.ceil(tickets.length / ticketsPerPage); i++) {
+      pageNumbers.push(i);
+    }
 
     const dangapdung = {
       backgroundColor: "#DEF7E0",
@@ -93,6 +155,12 @@ const DanhSachGoiVe = () =>{
       color:"#FD5959",
       padding:"3px 2px 2px 10px"
     }
+    const csvStyle = {
+      textDecoration:"none",
+      fontSize: "12px",
+      alignItems: "center",
+      color:"#FF993C",
+    }
 
     return(
     <div className="ticket-list rendered-item">
@@ -106,8 +174,28 @@ const DanhSachGoiVe = () =>{
         <button className="taove" onClick={()=>setOpenCreate(true)}>
             Thêm gói vé
         </button>
-        <button className="csv">Xuất file (.csv)</button>
-          
+        <button className="csv">
+          <CSVLink {...csvLink} style={csvStyle}>
+            Xuất file (.csv)
+          </CSVLink>
+        </button>
+
+          <div className='pagination'>
+              <button className="previous">
+                <img src={previous} alt="previous" />
+              </button>
+              {pageNumbers.map(number => (
+              <div key={number} className='page-item'>
+                  <a onClick={() => paginate(number)} className='page-link'>
+                  {number}
+                  </a>
+              </div>
+              ))}
+              <button className="next">
+                <img src={next} alt="next" />
+              </button>
+          </div>
+
           <table className="list-table">
               <tr  className="table-heading"> 
                   <th>STT</th>
@@ -120,8 +208,8 @@ const DanhSachGoiVe = () =>{
                   <th>Tình trạng</th>
                   <th> </th>
               </tr>
-            {tickets.map((ticket) =>
-                <tr className="table-content">
+            {currentTickets.map((ticket) =>
+                <tr className="table-content" key={ticket.id}>
                     <td>{ticket.no}</td>
                     <td>{ticket.packID}</td>
                     <td>{ticket.packName}</td>
@@ -129,7 +217,7 @@ const DanhSachGoiVe = () =>{
                     <td>{ticket.expireDate}</td>
                     <td>{ticket.ticketPrice}</td>
                     {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
-                    <td>{ticket.comboPrice}</td>
+                    <td>{ticket.comboPrice} / {ticket.comboQuantity} vé</td>
                     <td>
                       { ticket.status === "Đang áp dụng" &&
                       <Typography style={dangapdung}>
@@ -148,7 +236,7 @@ const DanhSachGoiVe = () =>{
                       </Typography>}
                     </td>
                     <td>
-                      <button className="btn-update" onClick={()=>setOpenUpdate(true)}>
+                      <button className="btn-update" onClick={()=>{openPopupUpdate(ticket.id)}}>
                         <img src={edit}/>
                         Cập nhật
                       </button>
@@ -157,11 +245,12 @@ const DanhSachGoiVe = () =>{
             )}
 
           </table>
+
           {!openUpdate && openCreate &&
-              <TaoVe onClose={togglePopupCreate}/>
+              <TaoVe onClose={togglePopupCreate} setCloseCreate={togglePopupCreate} ticketLength={tickets.length}/>
           }
           {!openCreate && openUpdate &&
-            <CapNhatVe onClose={togglePopupUpdate}/>
+            <CapNhatVe onClose={togglePopupUpdate} setCloseUpdate={togglePopupUpdate} ticketID={ticketId}/>
           }
 
     </div>

@@ -8,6 +8,9 @@ import greenDot from "../../images/greenDot.png";
 import redDot from "../../images/redDot.png";
 import grayDot from "../../images/grayDot.png";
 import LocVe from "../features/loc-ve";
+import previous from "../../images/previous.png"
+import next from "../../images/next.png"
+import { CSVLink } from "react-csv"
 
 interface ITicket {
     ticket:{
@@ -27,12 +30,19 @@ const DanhSachVe = () =>{
     const [tickets, setTickets] = useState<ITicket["ticket"]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [output, setOutput]=useState<ITicket ["ticket"]>([]);
-    const usersCollectionRef = collection(db, "tickets");
+    const ticketsCollectionRef = collection(db, "tickets");
     const [openFilter,setOpenFilter] = useState(false)
+
+    const [filterState, setFilterState]=useState<ITicket ["ticket"]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
+    const [ticketsPerPage] = useState(10);
+
+    const pageNumbers =[];
     useEffect( () => {
 
         const getTickets = async () => {
-          const res = await getDocs(usersCollectionRef)
+          const res = await getDocs(ticketsCollectionRef)
           .then( (res) => setTickets(res.docs.map((doc: any) => ({...doc.data(), key: doc.id}))))
         };
     
@@ -49,8 +59,39 @@ const DanhSachVe = () =>{
 
     }, [searchTerm])
 
+    const headers = [
+      {label:"no", key:"no"},
+      {label:"id", key:"id"},
+      {label:"ticketNumber", key:"ticketNumber"},
+      {label:"eventName", key:"eventName"},
+      {label:"useStatus", key:"nouseStatus"},
+      {label:"useDate", key:"useDate"},
+      {label:"releaseDate", key:"releaseDate"},
+      {label:"checkinGate", key:"checkinGate"}
+    ]
+
+    const csvLink = {
+      filename: "file.csv",
+      headers: headers,
+      data: tickets
+    }
+
+    useEffect(()=>{
+      setOutput(filterState);
+      setTickets([])
+      console.log(filterState)
+    },[filterState])
+
     const togglePopup = () => {
       setOpenFilter(!openFilter);
+    }
+
+    const indexOfLastPost = currentPage * ticketsPerPage;
+    const indexOfFirstPost = indexOfLastPost - ticketsPerPage;
+    const currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
+    
+    for (let i = 1; i <= Math.ceil(tickets.length / ticketsPerPage); i++) {
+      pageNumbers.push(i);
     }
 
     const dasudung = {
@@ -94,17 +135,43 @@ const DanhSachVe = () =>{
       color:"#FD5959",
       padding:"3px 2px 2px 10px"
     }
+    const csvStyle = {
+      textDecoration:"none",
+      fontSize: "12px",
+      alignItems: "center",
+      color:"#FF993C",
+    }
 
     return(
     <div className="ticket-list">
-        <h1 className="title">Danh sách vé</h1>
+        <h1 className="title" onClick={()=>setOpenFilter(!openFilter)}>Danh sách vé</h1>
 
         <input className="search" type="text" placeholder="Tìm bằng số vé" onChange={(e)=>setSearchTerm(e.target.value)}/>
         <button className="locve" onClick={()=>setOpenFilter(true)}>
             <img src={filter}/>
             Lọc vé
         </button>
-        <button className="csv">Xuất file (.csv)</button>
+        <button className="csv">
+          <CSVLink {...csvLink} style={csvStyle}>
+            Xuất file (.csv)
+          </CSVLink>
+        </button>
+
+        <div className='pagination'>
+              <button className="previous">
+                <img src={previous} alt="previous" />
+              </button>
+              {pageNumbers.map(number => (
+              <span key={number} className='page-item'>
+                  <a onClick={() => paginate(number)} className='page-link'>
+                  {number}
+                  </a>
+              </span>
+              ))}
+              <button className="next">
+                <img src={next} alt="next" />
+              </button>
+          </div>
 
         <table className="list-table">
             <tr className="table-heading">
@@ -117,8 +184,8 @@ const DanhSachVe = () =>{
                 <th>Ngày xuất vé</th>
                 <th>Cổng checkin</th>
             </tr>
-            {!searchTerm && 
-            tickets.map((ticket) =>
+            {!searchTerm &&
+            currentTickets.map((ticket) =>
               <tr className="table-content">
                   <td>{ticket.no}</td>
                   <td>{ticket.id}</td>
@@ -147,6 +214,70 @@ const DanhSachVe = () =>{
                   <td>{ticket.checkinGate}</td>
               </tr> 
           )}
+
+            {!filterState &&
+            currentTickets.map((ticket) =>
+              <tr className="table-content">
+                  <td>{ticket.no}</td>
+                  <td>{ticket.id}</td>
+                  <td>{ticket.ticketNumber}</td>
+                  <td>{ticket.eventName}</td>
+                  <td>
+                      { ticket.useStatus === "Đã sử dụng" &&
+                      <Typography style={dasudung}>
+                        <img src={grayDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
+                      { ticket.useStatus === "Chưa sử dụng" &&
+                      <Typography style={chuasudung}>
+                        <img src={greenDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
+                      { ticket.useStatus === "Hết hạn" &&
+                      <Typography style={hethan}>
+                        <img src={redDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
+                    </td>
+                  <td>{ticket.useDate}</td>
+                  {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
+                  <td>{ticket.releaseDate}</td>
+                  <td>{ticket.checkinGate}</td>
+              </tr> 
+          )}    
+
+          {filterState && !searchTerm &&
+            filterState.map((ticket) =>
+              <tr className="table-content">
+                  <td>{ticket.no}</td>
+                  <td>{ticket.id}</td>
+                  <td>{ticket.ticketNumber}</td>
+                  <td>{ticket.eventName}</td>
+                  <td>
+                      { ticket.useStatus === "Đã sử dụng" &&
+                      <Typography style={dasudung}>
+                        <img src={grayDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
+                      { ticket.useStatus === "Chưa sử dụng" &&
+                      <Typography style={chuasudung}>
+                        <img src={greenDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
+                      { ticket.useStatus === "Hết hạn" &&
+                      <Typography style={hethan}>
+                        <img src={redDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
+                    </td>
+                  <td>{ticket.useDate}</td>
+                  {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
+                  <td>{ticket.releaseDate}</td>
+                  <td>{ticket.checkinGate}</td>
+              </tr> 
+          )
+          }
+
           {searchTerm && 
             output.map((ticket) =>
               <tr className="table-content">
@@ -156,11 +287,20 @@ const DanhSachVe = () =>{
                   <td>{ticket.eventName}</td>
                   <td>
                       { ticket.useStatus === "Đã sử dụng" &&
-                      <Typography style={dasudung}>{ticket.useStatus}</Typography>}
+                      <Typography style={dasudung}>
+                        <img src={grayDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
                       { ticket.useStatus === "Chưa sử dụng" &&
-                      <Typography style={chuasudung}>{ticket.useStatus}</Typography>}
+                      <Typography style={chuasudung}>
+                        <img src={greenDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
                       { ticket.useStatus === "Hết hạn" &&
-                      <Typography style={hethan}>{ticket.useStatus}</Typography>}
+                      <Typography style={hethan}>
+                        <img src={redDot} className="dots"/>
+                        {ticket.useStatus}
+                      </Typography>}
                     </td>
                   <td>{ticket.useDate}</td>
                   {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
@@ -174,7 +314,7 @@ const DanhSachVe = () =>{
 
         </table>
         {openFilter &&
-              <LocVe onClose={togglePopup}/>
+              <LocVe onClose={togglePopup} setParentState={setFilterState} setCloseFilter={togglePopup}/>
         }
     </div>
     );

@@ -25,7 +25,7 @@ const NavBar = (props: any) =>{
           {/* <a className='avatar'><img src='../../../public/avatar.jpg'></img></a> */}
           <div className="menu">
             <div className='web-icon'>
-                <img style={{width:'100%', height:'30%'}} src={webicon}/>
+                <img style={{width:'130px', height:'55px'}} src={webicon}/>
             </div>
             <ul className="navbar-nav">
                 <li className="nav-item active">

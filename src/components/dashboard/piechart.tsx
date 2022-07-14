@@ -77,13 +77,13 @@ labels: [
           dadung +=1;
           //console.log(dadung)
         }
-        else if (tickets[j].packName=="Gói gia đình"&& tickets[j].status=="Tắt"){
+        else if (tickets[j].packName=="Gói gia đình"&& ( tickets[j].status=="Tắt" || tickets[j].status=="Chưa áp dụng")){
           chuadung +=1;
           //console.log(chuadung)
         }
     }
 
-    const label = ["Chưa sử dụng", "Đã sử dụng"];
+    const label = ["Chưa áp dụng", "Đang áp dụng"];
     const data = [chuadung,dadung];
           setGiadinh(
             {
@@ -106,13 +106,13 @@ labels: [
           sukiendadung +=1;
           //console.log(dadung)
         }
-        else if (tickets[j].packName=="Gói sự kiện"&& tickets[j].status=="Tắt"){
+        else if (tickets[j].packName=="Gói sự kiện"&& ( tickets[j].status=="Tắt" || tickets[j].status=="Chưa áp dụng")){
           sukienchuadung +=1;
           //console.log(chuadung)
         }
     }
 
-    const label = ["Chưa sử dụng", "Đã sử dụng"];
+    const label = ["Chưa áp dụng", "Đang áp dụng"];
     const data = [sukienchuadung,sukiendadung];
           setSukien(
             {

@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import { couldStartTrivia } from "typescript";
 import { db } from "../../firebase-config";
 import filter from "../../images/filter.png";
+import previous from "../../images/previous.png"
+import next from "../../images/next.png"
+import { CSVLink } from "react-csv"
+import datepicker from "../../images/datepicker.png";
 
 interface ITicket {
     ticket:{
@@ -29,9 +33,14 @@ const DoiSoatVe = () =>{
     const [todate, setToDate] = useState("");
     const [output, setOutput]=useState<ITicket ["ticket"]>([]);
     var [outputDate, setOutputDate] = useState<ITicket ["ticket"]>([]);
-    var [arrDates, setArrayDates] = useState<string[]>([])
     var [filter, setOnFilter]=useState(false)
-    const dates = ["2022-6-12","2022-6-13","2022-16-14","2022-6-15"]
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
+    const [ticketsPerPage] = useState(10);
+
+    const pageNumbers =[];
+
     useEffect( () => {
         const getTickets = async () => {
           const res = await getDocs(usersCollectionRef)
@@ -104,6 +113,33 @@ const DoiSoatVe = () =>{
         
     } 
 
+    const headers = [
+        {label:"no", key:"no"},
+        {label:"id", key:"id"},
+        {label:"ticketNumber", key:"ticketNumber"},
+        {label:"useDate", key:"useDate"},
+        {label:"ticketType", key:"ticketType"},
+        {label:"checkinGate", key:"checkinGate"},
+        {label:"status", key:"status"},
+      ]
+  
+    const csvLink = {
+        filename: "file.csv",
+        headers: headers,
+        data: tickets
+    }
+
+    const indexOfLastPost = currentPage * ticketsPerPage;
+    const indexOfFirstPost = indexOfLastPost - ticketsPerPage;
+    const currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
+    useEffect(()=>{
+      console.log(currentTickets)     
+    },[tickets])
+    
+    for (let i = 1; i <= Math.ceil(tickets.length / ticketsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
     const chuadoisoat = {
         color: " #A5A8B1",
         fontSize:"13px",
@@ -115,14 +151,55 @@ const DoiSoatVe = () =>{
         fontSize:"13px",
         fontStyle: "italic"
     }
+
+    const csvStyle = {
+        textDecoration:"none",
+        fontSize: "12px",
+        alignItems: "center",
+        color:"#FF993C",
+      }
     return(
     <div className="">
         <div className="control-item">
             <h1 className="title">Đối soát vé</h1>
 
             <input className="search" type="text" placeholder="Tìm bằng số vé" />
-            <button className="doisoat">Chốt đối soát</button>
+            {!stateTerm &&
+                <button className="doisoat">Chốt đối soát</button>
+            }
 
+            {stateTerm.includes("Chưa") &&
+                <button className="doisoat">Chốt đối soát</button>
+            }
+
+            {stateTerm.includes("Tất cả") &&
+                <button className="doisoat">Chốt đối soát</button>
+            }
+
+            {stateTerm === "Đã đối soát" &&
+                <button className="csv-doisoat">
+                    <CSVLink {...csvLink} style={csvStyle}>
+                        Xuất file (.csv)
+                    </CSVLink>
+                </button>
+            }
+
+
+            <div className='pagination'>
+              <button className="previous">
+                <img src={previous} alt="previous" />
+              </button>
+              {pageNumbers.map(number => (
+              <span key={number} className='page-item'>
+                  <a onClick={() => paginate(number)} className='page-link'>
+                  {number}
+                  </a>
+              </span>
+              ))}
+              <button className="next">
+                <img src={next} alt="next" />
+              </button>
+            </div>
             
                 <table className="control-table">
                         <tr className="control-table-heading">
