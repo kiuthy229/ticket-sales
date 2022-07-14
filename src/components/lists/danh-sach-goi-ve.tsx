@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react"
 import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { db } from "../../firebase-config";
 import filter from "../../images/filter.png";
 import edit from "../../images/edit.png";
@@ -52,6 +52,7 @@ interface IPack {
   }
 
 const DanhSachGoiVe = () =>{
+    const [reducerValue, forceUpdate] = useReducer( x=> x+1,0)
 
     const [tickets, setTickets] = useState<IPack["pack"]>([]);
     const [openCreate,setOpenCreate] = useState(false)
@@ -59,10 +60,16 @@ const DanhSachGoiVe = () =>{
     const packsCollectionRef = collection(db, "ticket-packs");
     const [ticketId, setTicketId] = useState<number>(0)
 
+    //SEARCH VARIABLES
+    const [searchTerm, setSearchTerm] = useState("");
+    const [output, setOutput]=useState<IPack ["pack"]>([]);
+
+    //PAGINATION VARIABLES
     const [currentPage, setCurrentPage] = useState(1);
     const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
+    const btnPrevious = ((pageNumber:any) => {if(currentPage>1){setCurrentPage(currentPage-1)}});
+    const btnNext = ((pageNumber:any) => {if(currentPage<pageNumbers.length){setCurrentPage(currentPage+1)}});
     const [ticketsPerPage] = useState(10);
-
     const pageNumbers =[];
 
 
@@ -74,14 +81,27 @@ const DanhSachGoiVe = () =>{
         };
     
         getTickets();
-      }, []);
+      }, [reducerValue]);
+
+    //OUTPUT WILL CHANGE WHEN TYPE IN SEARCH
+    useEffect ( ()=> {
+        setOutput([]);
+        tickets.filter(val=>{
+          if(val.packID.toLowerCase().includes(searchTerm)){
+            setOutput(output=>[...output, val])
+          }
+        })
+  
+    }, [searchTerm])
 
     const togglePopupCreate = () => {
       setOpenCreate(!openCreate);
+      forceUpdate()
     }
 
     const togglePopupUpdate= () => {
       setOpenUpdate(!openUpdate);
+      forceUpdate()
     }
 
     const openPopupUpdate = (ticketID:any) => {
@@ -106,9 +126,9 @@ const DanhSachGoiVe = () =>{
       data: tickets
     }
 
-    const indexOfLastPost = currentPage * ticketsPerPage;
-    const indexOfFirstPost = indexOfLastPost - ticketsPerPage;
-    const currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
+    var indexOfLastPost = currentPage * ticketsPerPage;
+    var indexOfFirstPost = indexOfLastPost - ticketsPerPage;
+    var currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
     
     for (let i = 1; i <= Math.ceil(tickets.length / ticketsPerPage); i++) {
       pageNumbers.push(i);
@@ -166,7 +186,7 @@ const DanhSachGoiVe = () =>{
     <div className="ticket-list rendered-item">
         <h1 className="title">Danh sách gói vé</h1>
 
-        <input className="search" type="text" placeholder="Tìm bằng số vé" />
+        <input className="search" type="text" placeholder="Tìm bằng số vé"  onChange={(e)=>setSearchTerm(e.target.value)}/>
         {/* <button className="locve">
             <img src={filter}/>
             Lọc vé
@@ -181,19 +201,25 @@ const DanhSachGoiVe = () =>{
         </button>
 
           <div className='pagination'>
-              <button className="previous">
-                <img src={previous} alt="previous" />
-              </button>
+
               {pageNumbers.map(number => (
-              <div key={number} className='page-item'>
-                  <a onClick={() => paginate(number)} className='page-link'>
-                  {number}
-                  </a>
-              </div>
+                <div>
+                    <button className="previous" onClick={() => btnPrevious(number)}>
+                      <img src={previous} alt="previous" />
+                    </button>
+
+                    <div key={number} className='page-item' onClick={() => paginate(number)} >
+                      <a className='page-link'>
+                      {number}
+                      </a>
+                    </div>
+
+                    <button className="next" onClick={() => btnNext(number)}>
+                      <img src={next} alt="next"/>
+                    </button>
+                </div>
               ))}
-              <button className="next">
-                <img src={next} alt="next" />
-              </button>
+
           </div>
 
           <table className="list-table">
@@ -208,7 +234,43 @@ const DanhSachGoiVe = () =>{
                   <th>Tình trạng</th>
                   <th> </th>
               </tr>
-            {currentTickets.map((ticket) =>
+            {!searchTerm && currentTickets.map((ticket) =>
+                <tr className="table-content" key={ticket.id}>
+                    <td>{ticket.no}</td>
+                    <td>{ticket.packID}</td>
+                    <td>{ticket.packName}</td>
+                    <td>{ticket.applyDate}</td>
+                    <td>{ticket.expireDate}</td>
+                    <td>{ticket.ticketPrice}</td>
+                    {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
+                    <td>{ticket.comboPrice} / {ticket.comboQuantity} vé</td>
+                    <td>
+                      { ticket.status === "Đang áp dụng" &&
+                      <Typography style={dangapdung}>
+                        <img src={greenDot} className="dots"/>
+                        {ticket.status}
+                      </Typography>}
+                      { ticket.status === "Chưa áp dụng" &&
+                      <Typography style={chuaapdung}>
+                        <img src={redDot} className="dots"/>
+                        {ticket.status}
+                      </Typography>}
+                      { ticket.status === "Tắt" &&
+                      <Typography style={tat}>
+                        <img src={redDot} className="dots"/>
+                        {ticket.status}
+                      </Typography>}
+                    </td>
+                    <td>
+                      <button className="btn-update" onClick={()=>{openPopupUpdate(ticket.id)}}>
+                        <img src={edit}/>
+                        Cập nhật
+                      </button>
+                    </td>
+                </tr> 
+            )}
+
+            {searchTerm && output.map((ticket) =>
                 <tr className="table-content" key={ticket.id}>
                     <td>{ticket.no}</td>
                     <td>{ticket.packID}</td>
@@ -245,6 +307,7 @@ const DanhSachGoiVe = () =>{
             )}
 
           </table>
+          
 
           {!openUpdate && openCreate &&
               <TaoVe onClose={togglePopupCreate} setCloseCreate={togglePopupCreate} ticketLength={tickets.length}/>

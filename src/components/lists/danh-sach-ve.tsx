@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { render } from "@testing-library/react"
 import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { db } from "../../firebase-config";
 import filter from "../../images/filter.png";
 import greenDot from "../../images/greenDot.png";
@@ -16,6 +16,7 @@ import { CSVLink } from "react-csv"
 
 interface ITicket {
     ticket:{
+      key:string,
       no:number,
       id:string,
       eventName:string,
@@ -41,11 +42,15 @@ const DanhSachVe = () =>{
     const [filterState, setFilterState]=useState<ITicket ["ticket"]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
+    const btnPrevious = ((pageNumber:any) => {if(currentPage>1){setCurrentPage(currentPage-1)}});
+    const btnNext = ((pageNumber:any) => {if(currentPage<pageNumbers.length){setCurrentPage(currentPage+1)}});
     const [ticketsPerPage] = useState(10);
     const [soVe, setSoVe] = useState("")
     const [loaiVe, setLoaiVe] = useState("")
     const [tenSuKien, setTenSuKien] = useState("")
     const [hanSuDung, setHanSuDung] = useState("")
+
+    const [reducerValue, forceUpdate] = useReducer( x=> x+1,0)
 
     const pageNumbers =[];
     useEffect( () => {
@@ -56,7 +61,7 @@ const DanhSachVe = () =>{
         };
     
         getTickets();
-      }, []);
+      }, [reducerValue]);
 
     useEffect ( ()=> {
       setOutput([]);
@@ -93,6 +98,7 @@ const DanhSachVe = () =>{
 
     const togglePopup = () => {
       setOpenFilter(!openFilter);
+      forceUpdate()
     }
 
     const toggleChangeDate = (ticketID:any, ticketNumber:any, ticketType:any, ticketName:any, useDate:any) => {
@@ -102,6 +108,7 @@ const DanhSachVe = () =>{
       setLoaiVe(ticketType)
       setTenSuKien(ticketName)
       setHanSuDung(useDate)
+      forceUpdate()
     }
 
     const indexOfLastPost = currentPage * ticketsPerPage;
@@ -176,20 +183,24 @@ const DanhSachVe = () =>{
         </button>
 
         <div className='pagination'>
-              <button className="previous">
-                <img src={previous} alt="previous" />
-              </button>
-              {pageNumbers.map(number => (
-              <span key={number} className='page-item'>
-                  <a onClick={() => paginate(number)} className='page-link'>
+          {pageNumbers.map(number => (
+            <div>
+                <button className="previous" onClick={() => btnPrevious(number)}>
+                  <img src={previous} alt="previous" />
+                </button>
+
+                <div key={number} className='page-item' onClick={() => paginate(number)} >
+                  <a className='page-link'>
                   {number}
                   </a>
-              </span>
-              ))}
-              <button className="next">
-                <img src={next} alt="next" />
-              </button>
-          </div>
+                </div>
+
+                <button className="next" onClick={() => btnNext(number)}>
+                  <img src={next} alt="next"/>
+                </button>
+            </div>
+          ))}
+        </div>
 
         <table className="list-table">
             <tr className="table-heading">
@@ -231,7 +242,7 @@ const DanhSachVe = () =>{
                   <td>{ticket.releaseDate}</td>
                   <td>{ticket.checkinGate}</td>
                   <td>
-                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.key, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
                       <img src={changeDate} />
                     </button>
                   </td>

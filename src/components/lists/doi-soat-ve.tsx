@@ -26,6 +26,7 @@ interface ITicket {
 
 const DoiSoatVe = () =>{
 
+    //FILTER VARIABLES
     const [tickets, setTickets] = useState<ITicket["ticket"]>([]);
     const usersCollectionRef = collection(db, "tickets");
     const [stateTerm, setStateTerm] = useState("");
@@ -35,8 +36,15 @@ const DoiSoatVe = () =>{
     var [outputDate, setOutputDate] = useState<ITicket ["ticket"]>([]);
     var [filter, setOnFilter]=useState(false)
 
+    //SEARCH VARIABLES
+    const [searchTerm, setSearchTerm] = useState("");
+    const [outputSearch, setOutputSearch]=useState<ITicket ["ticket"]>([]);
+
+    //PAGINATION VARIABLES
     const [currentPage, setCurrentPage] = useState(1);
     const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
+    const btnPrevious = ((pageNumber:any) => {if(currentPage>1){setCurrentPage(currentPage-1)}});
+    const btnNext = ((pageNumber:any) => {if(currentPage<pageNumbers.length){setCurrentPage(currentPage+1)}});
     const [ticketsPerPage] = useState(10);
 
     const pageNumbers =[];
@@ -50,6 +58,18 @@ const DoiSoatVe = () =>{
         getTickets();
       }, []);
 
+    //OUTPUT WILL CHANGE WHEN TYPE IN SEARCH
+        useEffect ( ()=> {
+            setOutputSearch([]);
+            tickets.filter(val=>{
+              if(val.id.toLowerCase().includes(searchTerm)){
+                setOutputSearch(output=>[...output, val])
+              }
+            })
+      
+    }, [searchTerm])
+
+    //FILTER DATE CHOSEN
     const onFilter = () => {
         setOnFilter(true)
         setOutput([]);
@@ -113,6 +133,7 @@ const DoiSoatVe = () =>{
         
     } 
 
+    //HEADERS FOR CSV
     const headers = [
         {label:"no", key:"no"},
         {label:"id", key:"id"},
@@ -123,12 +144,14 @@ const DoiSoatVe = () =>{
         {label:"status", key:"status"},
       ]
   
+    //EXPORT CSV
     const csvLink = {
         filename: "file.csv",
         headers: headers,
         data: tickets
     }
 
+    //PAGINATION
     const indexOfLastPost = currentPage * ticketsPerPage;
     const indexOfFirstPost = indexOfLastPost - ticketsPerPage;
     const currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
@@ -163,7 +186,7 @@ const DoiSoatVe = () =>{
         <div className="control-item">
             <h1 className="title">Đối soát vé</h1>
 
-            <input className="search" type="text" placeholder="Tìm bằng số vé" />
+            <input className="search" type="text" placeholder="Tìm bằng số vé"  onChange={(e)=>setSearchTerm(e.target.value)}/>
             {!stateTerm &&
                 <button className="doisoat">Chốt đối soát</button>
             }
@@ -184,22 +207,25 @@ const DoiSoatVe = () =>{
                 </button>
             }
 
-
             <div className='pagination'>
-              <button className="previous">
-                <img src={previous} alt="previous" />
-              </button>
-              {pageNumbers.map(number => (
-              <span key={number} className='page-item'>
-                  <a onClick={() => paginate(number)} className='page-link'>
-                  {number}
-                  </a>
-              </span>
-              ))}
-              <button className="next">
-                <img src={next} alt="next" />
-              </button>
-            </div>
+                {pageNumbers.map(number => (
+                    <div>
+                        <button className="previous" onClick={() => btnPrevious(number)}>
+                        <img src={previous} alt="previous"/>
+                        </button>
+
+                        <div key={number} className='page-item' onClick={() => paginate(number)}>
+                        <a className='page-link'>
+                        {number}
+                        </a>
+                        </div>
+
+                        <button className="next" onClick={() => btnNext(number)}>
+                        <img src={next} alt="next"/>
+                        </button>
+                    </div>
+                ))}
+              </div>
             
                 <table className="control-table">
                         <tr className="control-table-heading">
@@ -211,7 +237,7 @@ const DoiSoatVe = () =>{
                             <th>Cổng checkin</th>
                             <th className="invisible">Trạng thái</th>
                         </tr>
-                        {filter==false &&
+                        {!searchTerm && filter==false &&
                             tickets.map((ticket) =>
                             <tr className="control-table-content">
                                     <td>{ticket.no}</td>
@@ -231,6 +257,24 @@ const DoiSoatVe = () =>{
 
                         {output && 
                             output.map((ticket) =>
+                                <tr className="control-table-content">
+                                    <td>{ticket.no}</td>
+                                    <td>{ticket.id}</td>
+                                    <td>{ticket.ticketNumber}</td>
+                                    <td>{ticket.useDate}</td>
+                                    <td>{ticket.ticketType}</td>
+                                    <td>{ticket.checkinGate}</td>
+                                    <td>
+                                        { ticket.controlStatus === "Chưa đối soát" &&
+                                        <Typography style={chuadoisoat}>{ticket.controlStatus}</Typography>}
+                                        { ticket.controlStatus === "Đã đối soát" &&
+                                        <Typography style={dadoisoat}>{ticket.controlStatus}</Typography>}
+                                    </td>
+                                    </tr> 
+                        )}
+
+                        {searchTerm &&
+                            outputSearch.map((ticket) =>
                                 <tr className="control-table-content">
                                     <td>{ticket.no}</td>
                                     <td>{ticket.id}</td>
