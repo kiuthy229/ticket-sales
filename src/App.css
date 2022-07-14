@@ -592,6 +592,22 @@ li
   background: #FFFFFF;
   border-radius: 12px;
 }
+
+.changeDate{
+  opacity: 0%;
+  background: none;
+  border: 0px;
+}
+.changeDate:hover{
+  opacity: 100%;
+  background: none;
+  border: 0px;
+}
+.changeDate:focus{
+  opacity: 100%;
+  background: none;
+  border: 0px;
+}
 .search{
   display: flex;
   flex-direction: row;
@@ -1166,9 +1182,7 @@ opacity: 0.7;
   height: 26px;
   left:5%;
   top:60%;
-  
-  font-family: 'Montserrat';
-  font-style: normal;
+
   font-weight: 600;
   font-size: 13px;
   line-height: 26px;
@@ -1591,4 +1605,218 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 ::-webkit-calendar-picker-indicator {
   filter:  invert(1);
   background: url(images/datepicker.png) no-repeat scroll 100% 50%;
+}
+
+.change-date{
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 42%;
+  height: 55%;
+  top: 0%;
+  left: 26%;
+  margin: auto;
+  margin-top: 10%;
+
+  background: #FFFFFF;
+  border: 0px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+}
+.changeDate-id-label{
+  position: absolute;
+  width: 89px;
+  height: 26px;
+  left: 5%;
+  top: 21%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+.changeDate-id{
+  position: absolute;
+  width: 89px;
+  height: 26px;
+  left: 35%;
+  top: 16%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+
+.changeDate-type-label{
+  position: absolute;
+  width: 89px;
+  height: 26px;
+  left: 5%;
+  top: 32%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+.changeDate-type{
+  position: absolute;
+  width: 100px;
+  height: 26px;
+  left: 35%;
+  top: 27%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+.changeDate-event-label{
+  position: absolute;
+  width: 100px;
+  height: 26px;
+  left: 5%;
+  top: 43%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+.changeDate-event{
+  position: absolute;
+  width: 300px;
+  height: 26px;
+  left: 35%;
+  top: 38%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+.changeDate-expired-label{
+  position: absolute;
+  width: 100px;
+  height: 26px;
+  left: 5%;
+  top: 54%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+.changeDate-expired{
+  position: absolute;
+  width: 100px;
+  height: 26px;
+  left: 35%;
+  top: 54%;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  
+  display: flex;
+  align-items: center;
+  
+  color: #1E0D03;
+  
+  opacity: 0.7;
+}
+.huy-changeDate{
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 11px 24px;
+  gap: 10px;
+  font-weight: 600;
+  color: #FF993C;
+  width: 30%;
+  height: 32px;
+  font-size: 13px;
+  border: 2.5px solid #FF993C;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.huy-changeDate:hover{
+  background-color: #FF993C;
+  color: #FFFFFF;
+  border: 2.5px solid #FF993C;
+}
+.luu-changeDate{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 20px;
+  gap: 10px;
+  border:0px;
+  width: 30%;
+  height: 32px;
+  font-size: 13px;
+  color: #FFFFFF;
+  font-weight: 600;
+  background: #FF993C;
+  border-radius: 8px;
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+.luu-changeDate:hover{
+  background-color: #f89130;
+  color: #FFFFFF;
+  border: 2.5px solid #FF993C;
 }

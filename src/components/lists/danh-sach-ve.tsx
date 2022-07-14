@@ -8,8 +8,10 @@ import greenDot from "../../images/greenDot.png";
 import redDot from "../../images/redDot.png";
 import grayDot from "../../images/grayDot.png";
 import LocVe from "../features/loc-ve";
+import DoiNgaySuDung from "../features/doi-ngay-su-dung";
 import previous from "../../images/previous.png"
 import next from "../../images/next.png"
+import changeDate from "../../images/changeDate.png"
 import { CSVLink } from "react-csv"
 
 interface ITicket {
@@ -31,12 +33,19 @@ const DanhSachVe = () =>{
     const [searchTerm, setSearchTerm] = useState("");
     const [output, setOutput]=useState<ITicket ["ticket"]>([]);
     const ticketsCollectionRef = collection(db, "tickets");
+    //Popup
     const [openFilter,setOpenFilter] = useState(false)
+    const [openChangeDate,setOpenChangeDate] = useState(false)
+    const [ticketId, setTicketId] = useState("")
 
     const [filterState, setFilterState]=useState<ITicket ["ticket"]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
     const [ticketsPerPage] = useState(10);
+    const [soVe, setSoVe] = useState("")
+    const [loaiVe, setLoaiVe] = useState("")
+    const [tenSuKien, setTenSuKien] = useState("")
+    const [hanSuDung, setHanSuDung] = useState("")
 
     const pageNumbers =[];
     useEffect( () => {
@@ -84,6 +93,15 @@ const DanhSachVe = () =>{
 
     const togglePopup = () => {
       setOpenFilter(!openFilter);
+    }
+
+    const toggleChangeDate = (ticketID:any, ticketNumber:any, ticketType:any, ticketName:any, useDate:any) => {
+      setOpenChangeDate(!openChangeDate);
+      setTicketId(ticketID)
+      setSoVe(ticketNumber)
+      setLoaiVe(ticketType)
+      setTenSuKien(ticketName)
+      setHanSuDung(useDate)
     }
 
     const indexOfLastPost = currentPage * ticketsPerPage;
@@ -212,6 +230,11 @@ const DanhSachVe = () =>{
                   {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
                   <td>{ticket.releaseDate}</td>
                   <td>{ticket.checkinGate}</td>
+                  <td>
+                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                      <img src={changeDate} />
+                    </button>
+                  </td>
               </tr> 
           )}
 
@@ -243,6 +266,11 @@ const DanhSachVe = () =>{
                   {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
                   <td>{ticket.releaseDate}</td>
                   <td>{ticket.checkinGate}</td>
+                  <td>
+                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                      <img src={changeDate} />
+                    </button>
+                  </td>
               </tr> 
           )}    
 
@@ -274,6 +302,11 @@ const DanhSachVe = () =>{
                   {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
                   <td>{ticket.releaseDate}</td>
                   <td>{ticket.checkinGate}</td>
+                  <td>
+                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                      <img src={changeDate} />
+                    </button>
+                  </td>
               </tr> 
           )
           }
@@ -306,13 +339,18 @@ const DanhSachVe = () =>{
                   {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
                   <td>{ticket.releaseDate}</td>
                   <td>{ticket.checkinGate}</td>
+                  <td>
+                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                      <img src={changeDate} />
+                    </button>
+                  </td>
               </tr> 
           )
           }
-          
-            
-
         </table>
+        {openChangeDate && !openFilter &&
+              <DoiNgaySuDung onClose={toggleChangeDate} setCloseChangeDate={toggleChangeDate} ticketID={ticketId} soVe={soVe} loaiVe={loaiVe} tenSuKien={tenSuKien} hanSuDung={hanSuDung}/>
+        }
         {openFilter &&
               <LocVe onClose={togglePopup} setParentState={setFilterState} setCloseFilter={togglePopup}/>
         }

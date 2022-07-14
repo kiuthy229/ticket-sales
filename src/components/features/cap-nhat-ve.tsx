@@ -93,7 +93,7 @@ const CapNhatVe = (props:any) => {
         <div className="createticket inner">
             <h1 className="header-update">Cập nhật thông tin gói vé</h1>
             <label className="update-packid-label">Mã sự kiện</label>
-            <input className="update-packid-input" placeholder="Ticket id" onChange={(e: any) => {setPackID(e.target.value)}}/>
+            <input className="update-packid-input" placeholder={ticketName} onChange={(e: any) => {setPackID(e.target.value)}}/>
 
             <label className="update-packname-label">Tên sự kiện</label>
             <input className="update-packname-input" placeholder="Ticket name" onChange={(e: any) => {setTicketName(e.target.value)}}/>
