@@ -3,6 +3,10 @@ import { useState } from "react";
 import { db } from "../../firebase-config";
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewTicket, updateNewTicket } from "../../redux/actions/actionType";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Calendar from "../calendar/lich";
+import moment from "moment";
 
 interface IPack {
     pack:{
@@ -33,11 +37,8 @@ type Pack ={
 
 const CapNhatVe = (props:any) => {
     const dispatch = useDispatch();
-    const [newTicket, setNewTicket] = useState<Pack>();
-    const [tickets, setTickets] = useState<IPack["pack"]>([]);
 
     const [packId, setPackID]= useState('');
-    const [ticketNo, setTicketNo] = useState<number>();
     const [ticketName, setTicketName]= useState('');
     const [newApplyDate, setApplyDate]= useState('');
     const [newApplyTime, setApplyTime]= useState('');
@@ -63,7 +64,6 @@ const CapNhatVe = (props:any) => {
 
     const handleHobbyEditClick = (ticket: Pack) => {
           console.log('Form submit: ', ticket);
-            // Do something here
             const action = updateNewTicket(ticket);
             console.log({ action });
             dispatch(action);
@@ -93,40 +93,53 @@ const CapNhatVe = (props:any) => {
         <div className="createticket inner">
             <h1 className="header-update">Cập nhật thông tin gói vé</h1>
             <label className="update-packid-label">Mã sự kiện</label>
-            <input className="update-packid-input" placeholder={ticketName} onChange={(e: any) => {setPackID(e.target.value)}}/>
+            <input className="update-packid-input" placeholder="Mã sự kiện" onChange={(e: any) => {setPackID(e.target.value)}}/>
 
             <label className="update-packname-label">Tên sự kiện</label>
             <input className="update-packname-input" placeholder="Ticket name" onChange={(e: any) => {setTicketName(e.target.value)}}/>
 
             <label className="dateuse-label">Ngày áp dụng</label>
-            <input className="dateuse-input" type="date" onChange={(e: any) => {setApplyDate(e.target.value)}}/>
+            <div className="dateuse-input"><Calendar defaultDate={moment()} setFromDate={setApplyDate}/></div>
             <input className="dateuse-time" type="time" onChange={(e: any) => {setApplyTime(e.target.value)}}/>
 
+
             <label className="expiredate-label">Ngày hết hạn</label>
-            <input className="expiredate-input" type="date" onChange={(e: any) => {setExpireDate(e.target.value)}}/>
+            <div className="expiredate-input"><Calendar defaultDate={moment()} setFromDate={setExpireDate}/></div>
             <input className="expiredate-time" type="time" onChange={(e: any) => {setExpireTime(e.target.value)}}/>
 
             <label className="price-label">Gía vé áp dụng</label>
             {isCheckTicket==true &&
                 <div className="single-ticket">
-                    <input type="checkbox" defaultChecked={isCheckTicket} onChange={checkTicket}/>
-                    <label>Vé lẻ (vnđ/vé) với giá</label>
+                    <FormControlLabel
+                            control={
+                            <Checkbox defaultChecked={isCheckTicket} onChange={checkTicket}/>
+                            }
+                            label="Vé lẻ (vnđ/vé) với giá"
+                    />
                     <input className="single-ticket-input" type="number" onChange={(e: any) => {setSingleTicket(e.target.value)}} placeholder="Gía vé"/>
                     <label>/ vé</label>
                 </div>
             }
             {isCheckTicket==false &&
                 <div className="single-ticket">
-                    <input type="checkbox" defaultChecked={isCheckTicket} onChange={checkTicket}/>
-                    <label>Vé lẻ (vnđ/vé) với giá</label>
+                    <FormControlLabel
+                            control={
+                            <Checkbox defaultChecked={isCheckTicket} onChange={checkTicket}/>
+                            }
+                            label="Vé lẻ (vnđ/vé) với giá"
+                    />
                     <input className="single-ticket-input" type="number" onChange={(e: any) => {setSingleTicket(e.target.value)}} disabled style={{background:"#E0E0E0"}}/>
                     <label>/ vé</label>
                 </div>
             }
             {isCheckCombo==true &&
                 <div className="combo-ticket">
-                    <input type="checkbox" defaultChecked={isCheckCombo} onChange={checkCombo}/>
-                    <label className="combo-ticket-label">Combo vé với giá</label>
+                    <FormControlLabel
+                            control={
+                            <Checkbox name="selectAll" value="selectAll" id="selectAll" defaultChecked={isCheckCombo} onChange={checkCombo}/>
+                            }
+                            label="Combo vé với giá"
+                    />
                     <input className="combo-ticket-input" type="number" onChange={(e: any) => {setComboTicket(e.target.value)}} placeholder="Gía Combo"/>
                     <label className="slash">/</label>
                     <label className="slash-ve">vé</label>
@@ -135,8 +148,12 @@ const CapNhatVe = (props:any) => {
             }
             {isCheckCombo==false &&
                 <div className="combo-ticket">
-                    <input type="checkbox" defaultChecked={isCheckCombo} onChange={checkCombo}/>
-                    <label className="combo-ticket-label">Combo vé với giá</label>
+                    <FormControlLabel
+                            control={
+                            <Checkbox name="selectAll" value="selectAll" id="selectAll" defaultChecked={isCheckCombo} onChange={checkCombo}/>
+                            }
+                            label="Combo vé với giá"
+                    />
                     <input className="combo-ticket-input" type="number" onChange={(e: any) => {setComboTicket(e.target.value)}} disabled style={{background:"#E0E0E0"}}/>
                     <label className="slash">/</label>
                     <label className="slash-ve">vé</label>

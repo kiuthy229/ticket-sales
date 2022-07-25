@@ -4,7 +4,7 @@ import { db } from "../../firebase-config";
 
 const DoiNgaySuDung = (props:any) => {
     const [newUseDate, setUseDate] = useState("")
-    console.log(props.tenSuKien)
+    // console.log(props.ticketID)
 
     const updateTicket = async (id:string, useDate:string) => {
         const ticketDoc = doc(db,"tickets", id)

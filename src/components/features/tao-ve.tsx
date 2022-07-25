@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewTicket } from "../../redux/actions/actionType";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import moment from "moment";
+import Calendar from "../calendar/lich";
 
 interface IPack {
     pack:{
@@ -135,50 +139,66 @@ const TaoVe = (props:any) => {
             <input className="ticketname-input" placeholder="Ticket name" onChange={(e: any) => {setTicketName(e.target.value)}}/>
 
             <label className="dateuse-label">Ngày áp dụng</label>
-            <input className="dateuse-input" type="date" onChange={(e: any) => {setUseDate(e.target.value)}}/>
+            <div className="dateuse-input"><Calendar defaultDate={moment()} setFromDate={setUseDate}/></div>
             <input className="dateuse-time" type="time" style={{color:"#1E0D03"}} onChange={(e: any) => {setUseTime(e.target.value)}}/>
 
             <label className="expiredate-label">Ngày hết hạn</label>
-            <input className="expiredate-input" type="date" onChange={(e: any) => {setExpireDate(e.target.value)}}/>
+            <div className="expiredate-input"><Calendar defaultDate={moment()} setFromDate={setExpireDate}/></div>
             <input className="expiredate-time" type="time" onChange={(e: any) => {setExpireTime(e.target.value)}}/>
 
             <label className="price-label">Gía vé áp dụng</label>
             {isCheckTicket==true &&
                     <div className="single-ticket">
-                        <input type="checkbox" defaultChecked={isCheckTicket} onChange={checkTicket}/>
-                        <label>Vé lẻ (vnđ/vé) với giá</label>
+                        <FormControlLabel
+                            control={
+                            <Checkbox defaultChecked={isCheckTicket} onChange={checkTicket}/>
+                            }
+                            label="Vé lẻ (vnđ/vé) với giá"
+                        />
                         <input className="single-ticket-input" type="number" onChange={(e: any) => {setSingleTicket(e.target.value)}} placeholder="Gía vé"/>
                         <label className="slash">/ vé</label>           
                     </div>
             }
             {isCheckTicket==false &&
                     <div className="single-ticket">
-                        <input type="checkbox" defaultChecked={isCheckTicket} onChange={checkTicket}/>
-                        <label>Vé lẻ (vnđ/vé) với giá</label>
+                        <FormControlLabel
+                            control={
+                            <Checkbox defaultChecked={isCheckTicket} onChange={checkTicket}/>
+                            }
+                            label="Vé lẻ (vnđ/vé) với giá"
+                        />
                         <input className="single-ticket-input" type="number" onChange={(e: any) => {setSingleTicket(e.target.value)}} disabled style={{background:"#E0E0E0"}}/>
                         <label className="slash">/ vé</label>           
                     </div>
             }
             {isCheckCombo==true &&
-            <div className="combo-ticket">
-                <input type="checkbox" defaultChecked={isCheckCombo} onChange={checkCombo}/>
-                <label className="combo-ticket-label">Combo vé với giá</label>
-                <input className="combo-ticket-input" type="number" onChange={(e: any) => {setComboTicket(e.target.value)}} placeholder="Gía Combo"/>
-                <label className="slash">/</label>
-                <label className="slash-ve">vé</label>
-                <input className="combo-quantity-input" type="number" onChange={(e: any) => {setComboQuantity(e.target.value)}} placeholder="Số lượng"/>
-            </div>
+                    <div className="combo-ticket">
+                        <FormControlLabel
+                            control={
+                            <Checkbox name="selectAll" value="selectAll" id="selectAll" defaultChecked={isCheckCombo} onChange={checkCombo}/>
+                            }
+                            label="Combo vé với giá"
+                        />
+                        <input className="combo-ticket-input" type="number" onChange={(e: any) => {setComboTicket(e.target.value)}} placeholder="Gía Combo"/>
+                        <label className="slash">/</label>
+                        <label className="slash-ve">vé</label>
+                        <input className="combo-quantity-input" type="number" onChange={(e: any) => {setComboQuantity(e.target.value)}} placeholder="Số lượng"/>
+                    </div>
             }
 
             {isCheckCombo==false &&
-            <div className="combo-ticket">
-                <input type="checkbox" defaultChecked={isCheckCombo} onChange={checkCombo}/>
-                <label className="combo-ticket-label">Combo vé với giá</label>
-                <input className="combo-ticket-input" type="number" onChange={(e: any) => {setComboTicket(e.target.value)}} disabled style={{background:"#E0E0E0"}}/>
-                <label className="slash">/</label>
-                <label className="slash-ve">vé</label>
-                <input className="combo-quantity-input" type="number" onChange={(e: any) => {setComboQuantity(e.target.value)}} disabled style={{background:"#E0E0E0"}}/>
-            </div>
+                    <div className="combo-ticket">
+                        <FormControlLabel
+                            control={
+                            <Checkbox name="selectAll" value="selectAll" id="selectAll" defaultChecked={isCheckCombo} onChange={checkCombo}/>
+                            }
+                            label="Combo vé với giá"
+                        />
+                        <input className="combo-ticket-input" type="number" onChange={(e: any) => {setComboTicket(e.target.value)}} disabled style={{background:"#E0E0E0"}}/>
+                        <label className="slash">/</label>
+                        <label className="slash-ve">vé</label>
+                        <input className="combo-quantity-input" type="number" onChange={(e: any) => {setComboQuantity(e.target.value)}} disabled style={{background:"#E0E0E0"}}/>
+                    </div>
             }
             <div>
                 <label className="label-status">Tình trạng</label>

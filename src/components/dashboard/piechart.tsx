@@ -3,6 +3,8 @@ import {Chart as ChartJs, Tooltip, Title, ArcElement, Legend} from 'chart.js';
 import {db} from '../../firebase-config';
 import { collection, getDocs, Timestamp } from 'firebase/firestore';
 import { Doughnut } from 'react-chartjs-2';
+import Calendar from '../calendar/lich';
+import moment from 'moment';
 ChartJs.register(
   Tooltip, Title, ArcElement, Legend
 );
@@ -36,25 +38,31 @@ function PieChart() {
           '#4F75FF'
         ]
     },
+  ]
+  });
+  var [sukien, setSukien] = useState({
+    datasets: [{
+        data: [10,20],
+        backgroundColor:[
+          '#FF8A48',
+          '#4F75FF'
+        ]
+    },
+  ]
+  });
+  var [label, setLabel] = useState({
+    datasets: [{
+        data: [0,0],
+        backgroundColor:[
+          '#FF8A48',
+          '#4F75FF'
+        ]
+    },
   ],
   labels: [
-      'Orange',
-      'Blue'
+      'Chưa áp dụng',
+      'Đang áp dụng'
   ], 
-});
-var [sukien, setSukien] = useState({
-  datasets: [{
-      data: [10,20],
-      backgroundColor:[
-        '#FF8A48',
-        '#4F75FF'
-      ]
-  },
-],
-labels: [
-    'Orange',
-    'Blue'
-], 
 });
 
 
@@ -69,8 +77,6 @@ labels: [
       
   },[]);
 
-  //console.log(tickets.length)
-
   useEffect (() => {
     for (var j =0; j<tickets.length; j++){
         if(tickets[j].packName=="Gói gia đình"&& tickets[j].status.includes("Đang")){
@@ -83,7 +89,6 @@ labels: [
         }
     }
 
-    const label = ["Chưa áp dụng", "Đang áp dụng"];
     const data = [chuadung,dadung];
           setGiadinh(
             {
@@ -94,8 +99,7 @@ labels: [
                     '#4F75FF'
                   ]
               },
-            ],
-            labels:label, 
+            ] 
           }
           )
   },[tickets])
@@ -112,7 +116,6 @@ labels: [
         }
     }
 
-    const label = ["Chưa áp dụng", "Đang áp dụng"];
     const data = [sukienchuadung,sukiendadung];
           setSukien(
             {
@@ -123,8 +126,7 @@ labels: [
                     '#4F75FF'
                   ]
               },
-            ],
-            labels:label, 
+            ]
           }
           )
   },[tickets])
@@ -133,18 +135,17 @@ labels: [
 
   return (
     <div className='PieChart'>
-      <input type="date"/>
+      <input type="date" className='date-piechart'/>
       <div className="piechart-goigiadinh" style={{width:'17%', height:'17%'}}>
         <div className='goigiadinh'>Gói Gia Đình</div>
-        {/* {tickets.map((ticket) =>
-        <div key={ticket.id}>{ticket.name}</div> )} */}
         <Doughnut data={giadinh}/>
       </div>
       <div className="piechart-goisukien" style={{width:'17%', height:'17%'}}>
         <div className='goisukien'>Gói Sự Kiện</div>
-        {/* {tickets.map((ticket) =>
-        <div key={ticket.id}>{ticket.name}</div> )} */}
         <Doughnut data={sukien}/>
+      </div>
+      <div className="label-piechart">
+        <Doughnut data={label}/>
       </div>
     </div>
   );

@@ -1,21 +1,22 @@
-import { validateCallback } from "@firebase/util";
+
 import { Typography } from "@material-ui/core";
-import { render } from "@testing-library/react"
-import { sort } from "d3";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { couldStartTrivia } from "typescript";
 import { db } from "../../firebase-config";
 import filter from "../../images/filter.png";
 import previous from "../../images/previous.png"
 import next from "../../images/next.png"
 import { CSVLink } from "react-csv"
-import datepicker from "../../images/datepicker.png";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import moment from "moment";
+import Calendar from "../calendar/lich";
 
 interface ITicket {
     ticket:{
       no:number,
-      id:string,
+      ticketID:string,
       ticketNumber:number,
       ticketType:string,
       useDate:string,
@@ -26,6 +27,9 @@ interface ITicket {
 
 const DoiSoatVe = () =>{
 
+    //RADIO BUTTONS
+    const [value, setValue] = useState('');
+
     //FILTER VARIABLES
     const [tickets, setTickets] = useState<ITicket["ticket"]>([]);
     const usersCollectionRef = collection(db, "tickets");
@@ -35,6 +39,9 @@ const DoiSoatVe = () =>{
     const [output, setOutput]=useState<ITicket ["ticket"]>([]);
     var [outputDate, setOutputDate] = useState<ITicket ["ticket"]>([]);
     var [filter, setOnFilter]=useState(false)
+
+    const [startDate, setStartDate] = useState<number>();
+    const [endDate, setEndDate] = useState<number>();
 
     //SEARCH VARIABLES
     const [searchTerm, setSearchTerm] = useState("");
@@ -62,12 +69,31 @@ const DoiSoatVe = () =>{
         useEffect ( ()=> {
             setOutputSearch([]);
             tickets.filter(val=>{
-              if(val.id.toLowerCase().includes(searchTerm)){
+              if(val.ticketID.toLowerCase().includes(searchTerm)){
                 setOutputSearch(output=>[...output, val])
               }
             })
       
     }, [searchTerm])
+
+    //CHANGE VALUES OF RADIO BUTTON
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue((event.target as HTMLInputElement).value);
+      };
+    useEffect(()=>{
+        setStateTerm(value)
+    },[value])
+
+    //GET DATE FROM CALENDAR
+    const getStartDate = () => {
+        let temp = Number.POSITIVE_INFINITY;
+        return moment(temp);
+      };
+
+    const getEndDate = () => {
+        let temp = 0;
+        return moment(temp);
+    };
 
     //FILTER DATE CHOSEN
     const onFilter = () => {
@@ -83,7 +109,7 @@ const DoiSoatVe = () =>{
         tickets.filter(val=>{ 
             if (chosenStartMonth === chosenEndMonth){
                 //tinh ngay trong cung2 thang
-                setOutputDate([]);
+                // setOutputDate([]);
                 if (Number(val.useDate.slice(5,7)) !== chosenStartMonth && chosenEndMonth !== Number(val.useDate.slice(5,7))){
                     console.log("out of scope 1")
                 }
@@ -94,22 +120,42 @@ const DoiSoatVe = () =>{
                 }
             }
             else if (chosenStartMonth !== chosenEndMonth){
-                setOutputDate([]);
-                if (Number(val.useDate.slice(5,7)) !== chosenStartMonth && chosenEndMonth !== Number(val.useDate.slice(5,7))){
-                    console.log("out of scope")
-                }
-                else if(Number(val.useDate.slice(5,7)) >= chosenStartMonth && Number(val.useDate.slice(5,7))<=chosenEndMonth){
-                        if(Number(val.useDate.slice(8,10)) >= chosenStartDay){
-                            outputDate.push(val)
-                            if (Number(val.useDate.slice(8,10)) > chosenEndDay && Number(val.useDate.slice(5,7)) === chosenEndMonth){
-                                var outScopeDate = Number(val.useDate.slice(8,10));
-                                for (var i = 0; i < outputDate.length; i++) {
-                                    if (Number(outputDate[i].useDate.slice(8,10)) == outScopeDate) {
-                                        var spliced = outputDate.splice(i, 1);
-                                    }
-                                }
+                if(Number(val.useDate.slice(5,7)) >= chosenStartMonth && Number(val.useDate.slice(5,7))<=chosenEndMonth){
+                  if(Number(val.useDate.slice(5,7)) > chosenStartMonth || Number(val.useDate.slice(5,7))<chosenEndMonth){
+                    outputDate.push(val)
+                    console.log(outputDate)
+                    if (Number(val.useDate.slice(8,10)) > chosenEndDay && Number(val.useDate.slice(5,7)) === chosenEndMonth){
+                        var outScopeDate = Number(val.useDate.slice(8,10));
+                        for (var i = 0; i < outputDate.length; i++) {
+                            if (Number(outputDate[i].useDate.slice(8,10)) == outScopeDate) {
+                                var spliced = outputDate.splice(i, 1);
+                                console.log("removed day")
                             }
                         }
+                    }
+                  }      
+                  else if(Number(val.useDate.slice(5,7)) == chosenStartMonth){
+                    if(Number(val.useDate.slice(8,10)) >= chosenStartDay){
+                      outputDate.push(val)
+                      console.log(outputDate)
+                      if (Number(val.useDate.slice(8,10)) > chosenEndDay && Number(val.useDate.slice(5,7)) === chosenEndMonth){
+                      var outScopeDate = Number(val.useDate.slice(8,10));
+                        for (var i = 0; i < outputDate.length; i++) {
+                            if (Number(outputDate[i].useDate.slice(8,10)) == outScopeDate) {
+                                  var spliced = outputDate.splice(i, 1);
+                                  console.log("removed day")
+                                }
+                            }
+                            }
+                    }
+                  }    
+                  else if(Number(val.useDate.slice(5,7)) == chosenEndMonth){
+                    if(Number(val.useDate.slice(8,10)) <= chosenEndDay){
+                      outputDate.push(val)
+                      console.log(outputDate)
+                    }
+                  }            
+                            
                 }
                 else {
                     console.log("no results because the date chosen is out of scope")
@@ -162,6 +208,10 @@ const DoiSoatVe = () =>{
     for (let i = 1; i <= Math.ceil(tickets.length / ticketsPerPage); i++) {
       pageNumbers.push(i);
     }
+
+    useEffect(()=>{
+        console.log(todate)
+    },[todate])
 
     const chuadoisoat = {
         color: " #A5A8B1",
@@ -241,7 +291,7 @@ const DoiSoatVe = () =>{
                             tickets.map((ticket) =>
                             <tr className="control-table-content">
                                     <td>{ticket.no}</td>
-                                    <td>{ticket.id}</td>
+                                    <td>{ticket.ticketID}</td>
                                     <td>{ticket.ticketNumber}</td>
                                     <td>{ticket.useDate}</td>
                                     <td>{ticket.ticketType}</td>
@@ -259,7 +309,7 @@ const DoiSoatVe = () =>{
                             output.map((ticket) =>
                                 <tr className="control-table-content">
                                     <td>{ticket.no}</td>
-                                    <td>{ticket.id}</td>
+                                    <td>{ticket.ticketID}</td>
                                     <td>{ticket.ticketNumber}</td>
                                     <td>{ticket.useDate}</td>
                                     <td>{ticket.ticketType}</td>
@@ -277,7 +327,7 @@ const DoiSoatVe = () =>{
                             outputSearch.map((ticket) =>
                                 <tr className="control-table-content">
                                     <td>{ticket.no}</td>
-                                    <td>{ticket.id}</td>
+                                    <td>{ticket.ticketID}</td>
                                     <td>{ticket.ticketNumber}</td>
                                     <td>{ticket.useDate}</td>
                                     <td>{ticket.ticketType}</td>
@@ -298,18 +348,16 @@ const DoiSoatVe = () =>{
             <h1 className="control-filter-heading">Lọc vé</h1>
             <p className="control-filter">Tình trạng đối soát</p>
             <div className="control-filter-options">
-            <div className="radio-row">
-                <input type="radio" id="tat-ca" name="fav_language" value="Tất cả" onChange={(e)=>setStateTerm(e.target.value)}/>
-                <label htmlFor="tat-ca">Tất cả</label>
-            </div>
-            <div className="radio-row">
-                <input type="radio" id="da-doi-soat" name="fav_language" value="Đã đối soát" onChange={(e)=>setStateTerm(e.target.value)}/>
-                <label htmlFor="da-doi-soat">Đã đối soát</label>
-            </div>
-            <div className="radio-row">
-                <input type="radio" id="chua-doi-soat" name="fav_language" value="Chưa đối soát" onChange={(e)=>setStateTerm(e.target.value)}/>
-                <label htmlFor="chua-doi-soat">Chưa đối soát</label>
-            </div>
+                <RadioGroup
+                    aria-labelledby="demo-error-radios"
+                    name="quiz"
+                    value={value}
+                    onChange={handleRadioChange}
+                >
+                    <FormControlLabel id="tat-ca" name="status" value="Tất cả" control={<Radio />} label="Tất cả"/> 
+                    <FormControlLabel id="da-doi-soat" name="status" value="Đã đối soát" control={<Radio />} label="Đã đối soát"/>
+                    <FormControlLabel id="chua-doi-soat" name="status" value="Chưa đối soát" control={<Radio />} label="Chưa đối soát"/> 
+                </RadioGroup>
             </div>
             <div>
                 <label className="control-ticket-type-filter-label">Loại vé</label>
@@ -317,11 +365,11 @@ const DoiSoatVe = () =>{
             </div>
             <div>
                 <label className="control-fromdate-filter-label">Từ ngày</label>
-                <input className="control-fromdate-filter-input" type="date" onChange={(e)=>setFromDate(e.target.value)}/>
+                <div className="control-fromdate-filter-input"><Calendar defaultDate={moment()} setFromDate={setFromDate}/></div>
             </div>
             <div>
                 <label className="control-todate-filter-label">Đến ngày</label>
-                <input className="control-todate-filter-input" type="date" onChange={(e)=>setToDate(e.target.value)}/>
+                <div className="control-todate-filter-input"><Calendar defaultDate={moment()} setToDate={setToDate}/></div>
             </div>
 
             <div>

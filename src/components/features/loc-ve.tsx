@@ -1,6 +1,12 @@
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import moment from 'moment';
 import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
+import Calendar from '../calendar/lich';
 import { Gates } from "./mock";
 
 interface ITicket {
@@ -17,6 +23,10 @@ interface ITicket {
 }
 
 const LocVe = (props:any) => {
+    //RADIO BUTTONS
+    const [value, setValue] = useState('');
+
+    //FILTER
     const [status, setStatus]= useState("")
     const [isCheckAll, setIsCheckAll] = useState(false);
     let [isCheck, setIsCheck] = useState<string[]>([]);
@@ -30,6 +40,8 @@ const LocVe = (props:any) => {
     var [filter, setOnFilter]=useState(false)
 
     const ticketsCollectionRef = collection(db, "tickets");
+
+    //GET ALL TICKETS TO DISPLAY
     useEffect( () => {
 
       const getTickets = async () => {
@@ -40,6 +52,7 @@ const LocVe = (props:any) => {
       getTickets();
     }, []);
 
+    //FUNCTION FILTER
     const onFilter = () => {
       setOnFilter(true)
       setOutput([])
@@ -55,7 +68,6 @@ const LocVe = (props:any) => {
       tickets.filter(val=>{ 
           if (chosenStartMonth === chosenEndMonth){
               //tinh ngay trong cung2 thang
-              setOutputDate([]);
               if (Number(val.useDate.slice(5,7)) !== chosenStartMonth && chosenEndMonth !== Number(val.useDate.slice(5,7))){
                   console.log("out of scope 1")
                   // console.log(Number(val.useDate.slice(5,7)))
@@ -70,21 +82,42 @@ const LocVe = (props:any) => {
               }
           }
           else if (chosenStartMonth !== chosenEndMonth){
-              setOutputDate([]);
               if(Number(val.useDate.slice(5,7)) >= chosenStartMonth && Number(val.useDate.slice(5,7))<=chosenEndMonth){
-                      if(Number(val.useDate.slice(8,10)) >= chosenStartDay){
-                          outputDate.push(val)
-                          //console.log(outputDate)
-                          if (Number(val.useDate.slice(8,10)) > chosenEndDay && Number(val.useDate.slice(5,7)) === chosenEndMonth){
-                              var outScopeDate = Number(val.useDate.slice(8,10));
-                              for (var i = 0; i < outputDate.length; i++) {
-                                  if (Number(outputDate[i].useDate.slice(8,10)) == outScopeDate) {
-                                      var spliced = outputDate.splice(i, 1);
-                                      console.log("removed day")
-                                  }
-                              }
+                if(Number(val.useDate.slice(5,7)) > chosenStartMonth || Number(val.useDate.slice(5,7))<chosenEndMonth){
+                  outputDate.push(val)
+                  console.log(outputDate)
+                  if (Number(val.useDate.slice(8,10)) > chosenEndDay && Number(val.useDate.slice(5,7)) === chosenEndMonth){
+                      var outScopeDate = Number(val.useDate.slice(8,10));
+                      for (var i = 0; i < outputDate.length; i++) {
+                          if (Number(outputDate[i].useDate.slice(8,10)) == outScopeDate) {
+                              var spliced = outputDate.splice(i, 1);
+                              console.log("removed day")
                           }
                       }
+                  }
+                }      
+                else if(Number(val.useDate.slice(5,7)) == chosenStartMonth){
+                  if(Number(val.useDate.slice(8,10)) >= chosenStartDay){
+                    outputDate.push(val)
+                    console.log(outputDate)
+                    if (Number(val.useDate.slice(8,10)) > chosenEndDay && Number(val.useDate.slice(5,7)) === chosenEndMonth){
+                    var outScopeDate = Number(val.useDate.slice(8,10));
+                      for (var i = 0; i < outputDate.length; i++) {
+                          if (Number(outputDate[i].useDate.slice(8,10)) == outScopeDate) {
+                                var spliced = outputDate.splice(i, 1);
+                                console.log("removed day")
+                              }
+                          }
+                          }
+                  }
+                }    
+                else if(Number(val.useDate.slice(5,7)) == chosenEndMonth){
+                  if(Number(val.useDate.slice(8,10)) <= chosenEndDay){
+                    outputDate.push(val)
+                    console.log(outputDate)
+                  }
+                }            
+                          
               }
               else {
                   console.log("no results because the date chosen is out of scope")
@@ -93,7 +126,7 @@ const LocVe = (props:any) => {
       })
       console.log(isCheck)
       outputDate.filter(val=>{
-              if ( status === "Tất cả" && isCheck.length ==5){
+              if ( status === "Tất cả" && isCheck.length >=5){
                   console.log("output 1")
                   setOutput(outputDate)
                   props.setParentState(outputDate)
@@ -119,25 +152,38 @@ const LocVe = (props:any) => {
       props.setCloseFilter(true)
   } 
 
+    //SET LIST OF GATES
     useEffect(() => {
         setList(Gates);
       }, [list]);
 
+    //CALL FUNCTION WHEN CLICKING ON SELECT ALL
     const handleSelectAll = (e: any) => {
         setIsCheckAll(!isCheckAll);
-        setIsCheck(list.map((li:any) => li));
+        setIsCheck([]);
         if (isCheckAll) {
           setIsCheck([]);
         }
       };
     
-      const handleClick = (e:any) => {
+    //CALL FUNCTION WHEN CLICKING ON EVERY GATE
+    const handleClick = (e:any) => {
         const { id, checked } = e.target;
         setIsCheck([...isCheck, id]);
+        setIsCheckAll(false);
         if (!checked) {
           setIsCheck(isCheck.filter(item => item !== id));
         }       
       };
+
+    //CHANGE VALUES OF RADIO BUTTON
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          setValue((event.target as HTMLInputElement).value);
+    };
+    useEffect(()=>{
+        setStatus(value)
+        console.log(status)
+    },[value])
 
 
     return(
@@ -145,59 +191,78 @@ const LocVe = (props:any) => {
             <h1 className="filter-heading">Lọc vé</h1>
 
             <label className="fromdate-label">Từ ngày</label>
-            <input className="fromdate-input" type="date" onChange={(e: any) => {setFromDate(e.target.value)}}/>
+            <div className="fromdate-input"><Calendar defaultDate={moment()} setFromDate={setFromDate}/></div>
 
             <label className="todate-label">Đến ngày</label>
-            <input className="todate-input" type="date" onChange={(e: any) => {setToDate(e.target.value)}}/>
+            <div className="todate-input"><Calendar defaultDate={moment()} setToDate={setToDate}/></div>
 
             <label className="status-text-filter">Tình trạng sử dụng</label>
-            <div className="status-filter">
-                
-                <input id="tất cả" type="radio" value="Tất cả" name="status" onChange={(e:any)=>setStatus(e.target.value)}/>
-                <label htmlFor="tất cả">Tất cả</label>
+            <RadioGroup
+                    aria-labelledby="demo-error-radios"
+                    name="quiz"
+                    value={value}
+                    onChange={handleRadioChange}
+            >
+              <div className="status-filter">
 
-                <input id="đã sử dụng" type="radio" value="Đã sử dụng" name="status" onChange={(e:any)=>setStatus(e.target.value)}/>
-                <label htmlFor="đã sử dụng">Đã sử dụng</label>
-
-                <input id="chưa sử dụng" type="radio" value="Chưa sử dụng" name="status" onChange={(e:any)=>setStatus(e.target.value)}/>
-                <label htmlFor="chưa sử dụng">Chưa sử dụng</label>
-
-                <input id="hết hạn" type="radio" value="Hết hạn" name="status" onChange={(e:any)=>setStatus(e.target.value)}/>
-                <label htmlFor="hết hạn">Hết hạn</label>
-            </div>
+                    <FormControlLabel id="tat-ca" name="status" value="Tất cả" control={<Radio />} label="Tất cả"/> 
+                    <FormControlLabel id="đã sử dụng" name="status" value="Đã sử dụng" control={<Radio />} label="Đã sử dụng"/> 
+                    <FormControlLabel id="chưa sử dụng" name="status" value="Chưa sử dụng" control={<Radio />} label="Chưa sử dụng"/> 
+                    <FormControlLabel id="hết hạn" name="status" value="Hết hạn" control={<Radio />} label="Hết hạn"/> 
+                  
+              </div>
+            </RadioGroup>
 
             <label className="check-in-label-filter">Cổng check-in</label>
             <div className="check-in-gate-filter">
                 {/* <input type="checkbox" className="check-all" name="Tất cả" value="Tất cả"/> */}
-                
                 <div>
-                  <input type="checkbox"
-                          name="selectAll"
-                          value="selectAll"
-                          id="selectAll"
-                          onChange={handleSelectAll}
-                          checked={isCheckAll}/>
-                  <label htmlFor="selectAll">Tất cả</label>
+                  <FormControlLabel
+                    control={
+                      <Checkbox name="selectAll" value="selectAll" id="selectAll" checked={isCheckAll} onChange={handleSelectAll}/>
+                    }
+                    label="Tất cả"
+                  />
                 </div>
                 <div>
-                  <input type="checkbox" id="Cổng 1" name="gate" value="Cổng 1" onChange={handleClick} checked={isCheck.includes("Cổng 1")}/>
-                  <label htmlFor="Cổng 1">Cổng 1</label>
+                  <FormControlLabel
+                    control={
+                      <Checkbox id="Cổng 1" checked={isCheck.includes("Cổng 1")} onChange={handleClick} name="gate"/>
+                    }
+                    label="Cổng 1"
+                  />
                 </div>
                 <div>
-                  <input type="checkbox" id="Cổng 2" name="gate" value="Cổng 2" onChange={handleClick} checked={isCheck.includes("Cổng 2")}/>
-                  <label htmlFor="Cổng 2">Cổng 2</label>
+                  <FormControlLabel
+                    control={
+                      <Checkbox id="Cổng 2" checked={isCheck.includes("Cổng 2")} onChange={handleClick} name="gate"/>
+                    }
+                    label="Cổng 2"
+                  />
                 </div>
                 <div>
-                  <input type="checkbox" id="Cổng 3" name="gate" value="Cổng 3" onChange={handleClick} checked={isCheck.includes("Cổng 3")}/>               
-                  <label htmlFor="Cổng 3">Cổng 3</label>
+                  <FormControlLabel
+                    control={
+                      <Checkbox id="Cổng 3" checked={isCheck.includes("Cổng 3")} onChange={handleClick} name="gate"/>
+                    }
+                    label="Cổng 3"
+                  />
                 </div>
                 <div>
-                  <input type="checkbox" id="Cổng 4" name="gate" value="Cổng 4" onChange={handleClick} checked={isCheck.includes("Cổng 4")}/>
-                  <label htmlFor="Cổng 4">Cổng 4</label>
+                  <FormControlLabel
+                    control={
+                      <Checkbox id="Cổng 4" checked={isCheck.includes("Cổng 4")} onChange={handleClick} name="gate"/>
+                    }
+                    label="Cổng 4"
+                  />
                 </div>
                 <div>
-                  <input type="checkbox" id="Cổng 5" name="gate" value="Cổng 5" onChange={handleClick} checked={isCheck.includes("Cổng 5")}/>
-                  <label htmlFor="Cổng 5">Cổng 5</label>
+                  <FormControlLabel
+                    control={
+                      <Checkbox id="Cổng 5" checked={isCheck.includes("Cổng 5")} onChange={handleClick} name="gate"/>
+                    }
+                    label="Cổng 5"
+                  />
                 </div>
             </div>
             

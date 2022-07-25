@@ -62,7 +62,7 @@ flex-grow: 0;
 }
 .control-filter{
   position: absolute;
-  width: 100%;
+  width: 40%;
   height: 100%;
   left: 3%;
   top: 10%;
@@ -103,7 +103,7 @@ flex-grow: 0;
   width: auto;
   height: auto;
   left: 49%;
-  top: 12.5%;
+  top: 9%;
   font-size: 15px;
 }
 .control-ticket-type-filter-label{
@@ -136,7 +136,7 @@ flex-grow: 0;
   width: 100%;
   height: auto;
   left: 10%;
-  top: 29%;
+  top: 30.5%;
 }
 .control-fromdate-filter-label{
   position: absolute;
@@ -161,7 +161,7 @@ flex-grow: 0;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  /* padding: 8px 16px; */
   gap: 28px;
 
   position: absolute;
@@ -169,11 +169,11 @@ flex-grow: 0;
   width: 30%;
   height: auto;
   left: 50%;
-  top: 36.5%;
+  top: 35.5%;
 
-  background: #F7F8FB;
+  /* background: #F7F8FB;
   border: 0px;
-  border-radius: 8px;
+  border-radius: 8px; */
 }
 .control-todate-filter-label{
   position: absolute;
@@ -182,8 +182,6 @@ flex-grow: 0;
   left: 3%;
   top: 45%;
 
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 600;
   font-size: 15px;
   line-height: 26px;
@@ -199,18 +197,18 @@ flex-grow: 0;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  /* padding: 8px 16px; */
   gap: 27px;
 
   position: absolute;
   width: 30%;
   height: auto;
   left: 50%;
-  top: 44.5%;
+  top: 43.5%;
 
-  background: #F7F8FB;
+  /* background: #F7F8FB;
   border:0px;
-  border-radius: 8px;
+  border-radius: 8px; */
 }
 
 .filter-button{
@@ -281,21 +279,21 @@ flex-grow: 0;
   width: 573px;
   height: 24px;
   left: 6%;
-  top: 44%;
+  top: 41%;
 }
 .check-in-gate-filter{
   flex-direction: row;
   align-items: center;
 
   display: flex;  
-  gap:30px;
+  gap:8px;
   justify-content: space-between;
   flex-wrap: wrap;
   position: absolute;
   width: 80%;
   height: 24px;
   left: 6%;
-  top: 58%;
+  top: 56%;
 }
 .check-in-gate-filter div{
   margin-right:14px;
@@ -364,17 +362,17 @@ flex-grow: 0;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 8px 12px;
+  /* padding: 8px 12px; */
   gap: 10px;
   
   position: absolute;
   width: 143px;
   height: 40px;
-  left: 6%;
+  left: 5%;
   top: 24%;
   
-  border: 1px solid #A5A8B1;
-  border-radius: 8px;
+  /* border: 1px solid #A5A8B1;
+  border-radius: 8px; */
 }
 .todate-label{
   position: absolute;
@@ -403,17 +401,17 @@ flex-grow: 0;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 8px 12px;
+  /* padding: 8px 12px; */
   gap: 10px;
 
   position: absolute;
   width: 143px;
   height: 40px;
-  left: 54%;
+  left: 53%;
   top: 24%;
 
-  border: 1px solid #A5A8B1;
-  border-radius: 8px;
+  /* border: 1px solid #A5A8B1;
+  border-radius: 8px; */
 }
 .status-text-filter{
   position: absolute;
@@ -508,10 +506,23 @@ li
     color: black;
     text-decoration: none;
     padding: 10px;
-    text-align: center;
+    align-items: flex-start;
     font-size: 13px;
+    width: 150px;
+    height: 40px;
 }
+.nav-link:hover
+{
+    background-color: #EAB126;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+    color: black;
 
+    background: #FFB800;
+    border-radius: 8px;
+}
 .nav-link.active
 {
     background-color: #EAB126;
@@ -519,9 +530,6 @@ li
     flex-direction: row;
     align-items: flex-start;
     padding: 10px;
-
-    width: 125px;
-    height: 30px;
 
     background: #FFB800;
     border-radius: 8px;
@@ -531,11 +539,8 @@ li
   background-color: #EAB126;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    padding: 10px;
 
-    width: 125px;
-    height: 30px;
+    padding: 10px;
 
     background: #FFB800;
     border-radius: 8px;
@@ -549,8 +554,14 @@ li
   text-align: center;
   font-size: 13px;
   width: 100%;
-  left:15%;
-  top:585%
+  left:26%;
+  top:400%
+}
+.nav-child:hover{
+  color: black;
+}
+.nav-child:focus{
+  font-weight: 600;
 }
 .rendered-item{
   position: absolute;
@@ -618,7 +629,7 @@ li
   border:0px;
   position: absolute;
   width: 30%;
-  height: 3%;
+  height: 6%;
   left: 1.5%;
   top: 9%;
 
@@ -909,12 +920,10 @@ color: #1E0D03;
   width: 103px;
   height: 26px;
   left:5%;
-  top:18%;
+  top:14%;
   
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 26px;
   
   display: flex;
@@ -931,7 +940,7 @@ color: #1E0D03;
   width: 40%;
   height: 6%;
   left:5%;
-  top:24%;
+  top:20%;
   padding: 10px;
   font-size: 13px;
   
@@ -945,12 +954,10 @@ position: absolute;
 width: 117px;
 height: 26px;
 left:5%;
-top:30%;
+top:28%;
 
-font-family: 'Montserrat';
-font-style: normal;
 font-weight: 600;
-font-size: 13px;
+font-size: 15px;
 line-height: 26px;
 
 display: flex;
@@ -968,18 +975,18 @@ opacity: 0.7;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 8px 12px;
+  /* padding: 8px 12px; */
   gap: 10px;
   
   position: absolute;
   width: 20%;
   height: 6%;
   left:5%;
-  top:35%;
+  top:34%;
   font-size:13px;
   
-  border: 1px solid #A5A8B1;
-  border-radius: 8px;
+  /* border: 1px solid #A5A8B1;
+  border-radius: 8px; */
 }
 .dateuse-time{
   box-sizing: border-box;
@@ -993,9 +1000,9 @@ opacity: 0.7;
   font-size: 13px;
   position: absolute;
   width: 20%;
-  height: 6%;
+  height: 7.5%;
   left:26%;
-  top:35%;
+  top:33.2%;
 
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -1005,12 +1012,10 @@ opacity: 0.7;
   width: 117px;
   height: 26px;
   left:55%;
-  top:30%;
+  top:28%;
   
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 26px;
   
   display: flex;
@@ -1027,18 +1032,18 @@ opacity: 0.7;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 8px 12px;
+  /* padding: 8px 12px; */
   gap: 10px;
   
   position: absolute;
   width: 20%;
   height: 6%;
   left:55%;
-  top:35%;
+  top:34%;
   font-size: 13px;
   
-  border: 1px solid #A5A8B1;
-  border-radius: 8px;
+  /* border: 1px solid #A5A8B1;
+  border-radius: 8px; */
 }
 .expiredate-time{
   box-sizing: border-box;
@@ -1052,9 +1057,9 @@ opacity: 0.7;
 
   position: absolute;
   width: 20%;
-  height: 6%;
+  height: 7.5%;
   left:76%;
-  top:35%;
+  top:33.2%;
 
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -1067,7 +1072,7 @@ opacity: 0.7;
   top:42%;
 
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 26px;
 
   display: flex;
@@ -1088,7 +1093,7 @@ opacity: 0.7;
   width: 391px;
   height: 40px;
   left:5%;
-  top:45%;
+  top:46%;
 }
 .combo-ticket{
   display: flex;
@@ -1113,7 +1118,7 @@ opacity: 0.7;
   gap: 10px;
   border: 0px;
   width: 100px;
-  height: 12px;
+  height: 30px;
 
   background: #F1F4F8;
   border-radius: 8px;
@@ -1130,7 +1135,7 @@ opacity: 0.7;
   gap: 10px;
 
   width: 100px;
-  height: 12px;
+  height: 30px;
   border:0px;
   background: #F1F4F8;
   border-radius: 8px;
@@ -1145,8 +1150,8 @@ opacity: 0.7;
   align-items: flex-start;
   padding: 10px 12px;
 
-  width: 50px;
-  height: 12px;
+  width: 80px;
+  height: 30px;
   border:0px;
   background: #F1F4F8;
   border-radius: 8px;
@@ -1167,8 +1172,8 @@ opacity: 0.7;
   align-items: flex-start;
   padding: 10px 12px;
 
-  width: 50px;
-  height: 12px;
+  width: 80px;
+  height: 30px;
   border:0px;
   background: #F1F4F8;
   border-radius: 8px;
@@ -1184,7 +1189,7 @@ opacity: 0.7;
   top:60%;
 
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 26px;
   
   display: flex;
@@ -1227,7 +1232,7 @@ opacity: 0.7;
   color: #FF993C;
   width: 40%;
   height: 40px;
-  font-size: 13px;
+  font-size: 15px;
   border: 2.5px solid #FF993C;
   border-radius: 8px;
   background-color: #FFFFFF;
@@ -1251,7 +1256,7 @@ opacity: 0.7;
   border:0px;
   width: 40%;
   height: 40px;
-  font-size: 13px;
+  font-size: 15px;
   color: #FFFFFF;
   font-weight: 600;
   background: #FF993C;
@@ -1286,16 +1291,14 @@ bottom: 10%;
   width: 89px;
   height: 26px;
   left: 5%;
-  top: 17%;
+  top: 16%;
 
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 26px;
   
   display: flex;
   align-items: center;
-  
-  /* Text */
   
   color: #1E0D03;
   
@@ -1308,9 +1311,7 @@ bottom: 10%;
   width: 41%;
   height: 32px;
   left:5%;
-  top:22%;
-  
-  /* Grey/4 */
+  top:21%;
   
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -1320,17 +1321,14 @@ bottom: 10%;
   width: 103px;
   height: 26px;
   left: 55%;
-  top: 17%;
+  top: 16%;
   
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 26px;
-  /* identical to box height, or 162% */
   
   display: flex;
   align-items: center;
-  
-  /* Text */
   
   color: #1E0D03;
   
@@ -1343,9 +1341,7 @@ bottom: 10%;
   width: 41%;
   height: 32px;
   left: 55%;
-  top:22%;
-  
-  /* Grey/4 */
+  top:21%;
   
   border: 1px solid #A5A8B1;
   border-radius: 8px;
@@ -1398,6 +1394,18 @@ bottom: 10%;
   left: 55%;
   top: 68%;
 }
+.label-piechart{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  width: 135px;
+  height: 100px;
+  left: 80%;
+  top: 70%;
+}
 .PieChart input{
   box-sizing: border-box;
 
@@ -1411,7 +1419,7 @@ bottom: 10%;
   width: 155px;
   height: 40px;
   left: 2%;
-  top: 63%;
+  top: 65%;
 
   background: #FFFFFF;
   border: 1px solid #E6E0E0;
@@ -1419,7 +1427,7 @@ bottom: 10%;
 }
 .LineChart{
   position: absolute;
-  width: 95%;
+  width: 90%;
   height: 1000px;
   left: 2%;
   top: 8%;
@@ -1436,7 +1444,7 @@ bottom: 10%;
   width: 10.5%;
   height: 6%;
   left: 85%;
-  top: 10%;
+  top: 6%;
 
   border: 0.8px solid #E6E0E0;
   box-shadow: 0px 0px 1px 1px #E6E0E0;
@@ -1450,10 +1458,8 @@ bottom: 10%;
   width: 100%;
   height: 10%;
   left: 2%;
-  top: 18.3rem;
+  top: 55%;
 
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 500;
   font-size: 15px;
   line-height: 22px;
@@ -1468,10 +1474,8 @@ bottom: 10%;
   width: 100%;
   height: 30px;
   left: 2%;
-  top: 20rem;
+  top: 58%;
 
-  font-family: 'Montserrat';
-  font-style: normal;
   font-weight: 700;
   font-size: 20px;
   line-height: 30px;
@@ -1482,7 +1486,7 @@ bottom: 10%;
   width: 38px;
   height: 22px;
   left: 13%;
-  top: 20.1rem;
+  top: 58.6%;
 
   font-weight: 500;
   font-size: 17px;
@@ -1519,7 +1523,7 @@ bottom: 10%;
 }
 
 .dots{
-  width: 6px;
+  width: 10px;
   height: 6px;
   padding-right:3px;
 }
@@ -1602,15 +1606,17 @@ bottom: 10%;
   height: 8px;
   top:0px;
   left:2px;
+  color:black;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+
+/* input[type="date"]::-webkit-calendar-picker-indicator {
   color: #eab126!important;
 }
 ::-webkit-calendar-picker-indicator {
   filter:  invert(1);
   background: url(images/datepicker.png) no-repeat scroll 100% 50%;
-}
+} */
 
 .change-date{
   box-sizing: border-box;
@@ -1825,3 +1831,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #FFFFFF;
   border: 2.5px solid #FF993C;
 }
+
+::-webkit-datetime-edit { padding: 0px; }
+::-webkit-datetime-edit-fields-wrapper { background: none; }
+::-webkit-datetime-edit-text { color: #1E0D03; }
+::-webkit-datetime-edit-month-field { color: #1E0D03;}
+::-webkit-datetime-edit-day-field { color: #1E0D03; }
+::-webkit-datetime-edit-year-field { color: #1E0D03; }
+::-webkit-inner-spin-button { display: none;  }
+/* .fromdate-input::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; }
+.todate-input::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; } */
+/* .dateuse-input::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; }
+.expiredate-input::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; } */
+.date-linechart::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; }
+.date-piechart::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; }
+/* .control-fromdate-filter-input::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; } */
+/* .control-todate-filter-input::-webkit-calendar-picker-indicator {background: url(images/datepicker.png) no-repeat scroll 100% 50%; } */
+.dateuse-time::-webkit-calendar-picker-indicator {background: url(images/clock2.png) no-repeat scroll 100% 50%; }
+.expiredate-time::-webkit-calendar-picker-indicator {background: url(images/clock2.png) no-repeat scroll 100% 50%; }

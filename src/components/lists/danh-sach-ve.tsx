@@ -1,5 +1,4 @@
 import { Typography } from "@material-ui/core";
-import { render } from "@testing-library/react"
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useReducer, useState } from "react";
 import { db } from "../../firebase-config";
@@ -18,7 +17,7 @@ interface ITicket {
     ticket:{
       key:string,
       no:number,
-      id:string,
+      ticketID:string,
       eventName:string,
       ticketNumber:number,
       useDate:string,
@@ -30,29 +29,41 @@ interface ITicket {
 
 const DanhSachVe = () =>{
 
-    const [tickets, setTickets] = useState<ITicket["ticket"]>([]);
+    //SEARCH AND OUTPUT
     const [searchTerm, setSearchTerm] = useState("");
     const [output, setOutput]=useState<ITicket ["ticket"]>([]);
     const ticketsCollectionRef = collection(db, "tickets");
+
     //Popup
     const [openFilter,setOpenFilter] = useState(false)
+    const [openFilterFirstTime,setOpenFilterFirstTime] = useState(false)
     const [openChangeDate,setOpenChangeDate] = useState(false)
     const [ticketId, setTicketId] = useState("")
+    const [ticketKey, setTicketKey] = useState<number>(0)
 
+    //FILTER
     const [filterState, setFilterState]=useState<ITicket ["ticket"]>([]);
+
+    //PAGINATION VARIABLES
     const [currentPage, setCurrentPage] = useState(1);
     const paginate = ((pageNumber:any) => setCurrentPage(pageNumber));
     const btnPrevious = ((pageNumber:any) => {if(currentPage>1){setCurrentPage(currentPage-1)}});
     const btnNext = ((pageNumber:any) => {if(currentPage<pageNumbers.length){setCurrentPage(currentPage+1)}});
     const [ticketsPerPage] = useState(10);
+    const indexOfLastPost = currentPage * ticketsPerPage;
+    const indexOfFirstPost = indexOfLastPost - ticketsPerPage;
+    
+    //VARIABLES
+    const [tickets, setTickets] = useState<ITicket["ticket"]>([]);
     const [soVe, setSoVe] = useState("")
     const [loaiVe, setLoaiVe] = useState("")
     const [tenSuKien, setTenSuKien] = useState("")
     const [hanSuDung, setHanSuDung] = useState("")
 
     const [reducerValue, forceUpdate] = useReducer( x=> x+1,0)
-
     const pageNumbers =[];
+
+    //GET ALL TICKETS TO DISPLAY
     useEffect( () => {
 
         const getTickets = async () => {
@@ -63,6 +74,13 @@ const DanhSachVe = () =>{
         getTickets();
       }, [reducerValue]);
 
+    //PAGINATE TICKETS
+    const currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
+    for (let i = 1; i <= Math.ceil(tickets.length / ticketsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    //SEARCH TICKETS
     useEffect ( ()=> {
       setOutput([]);
       tickets.filter(val=>{
@@ -71,8 +89,9 @@ const DanhSachVe = () =>{
         }
       })
 
-    }, [searchTerm])
+    }, [searchTerm, reducerValue])
 
+    //HEADERS FOR CSV
     const headers = [
       {label:"no", key:"no"},
       {label:"id", key:"id"},
@@ -83,15 +102,15 @@ const DanhSachVe = () =>{
       {label:"releaseDate", key:"releaseDate"},
       {label:"checkinGate", key:"checkinGate"}
     ]
-
     const csvLink = {
       filename: "file.csv",
       headers: headers,
       data: tickets
     }
 
+    //SET OUTPUT WHENEVER FILTER VALUES CHANGED
     useEffect(()=>{
-      setOutput(filterState);
+      setOutput(filterState)
       setTickets([])
       console.log(filterState)
     },[filterState])
@@ -101,9 +120,15 @@ const DanhSachVe = () =>{
       forceUpdate()
     }
 
-    const toggleChangeDate = (ticketID:any, ticketNumber:any, ticketType:any, ticketName:any, useDate:any) => {
+    const toggleOpenFilter = () => {
+      setOpenFilter(!openFilter)
+      setOpenFilterFirstTime(true)
+    }
+
+    //CHANGE DAY USE A TICKET
+    const toggleChangeDate = (key:any, ticketNumber:any, ticketType:any, ticketName:any, useDate:any) => {
       setOpenChangeDate(!openChangeDate);
-      setTicketId(ticketID)
+      setTicketKey(key)
       setSoVe(ticketNumber)
       setLoaiVe(ticketType)
       setTenSuKien(ticketName)
@@ -111,20 +136,13 @@ const DanhSachVe = () =>{
       forceUpdate()
     }
 
-    const indexOfLastPost = currentPage * ticketsPerPage;
-    const indexOfFirstPost = indexOfLastPost - ticketsPerPage;
-    const currentTickets = tickets.slice(indexOfFirstPost, indexOfLastPost);
-    
-    for (let i = 1; i <= Math.ceil(tickets.length / ticketsPerPage); i++) {
-      pageNumbers.push(i);
-    }
-
+    //STYLING FOR TAGS
     const dasudung = {
       backgroundColor: "#EAF1F8",
       border: "0.5px solid #919DBA",
       borderRadius: "4px",
       width: "60%",
-      height: "60%",
+      height: "70%",
       fontSize: "12px",
       display: "flex",
       justifyContent:"flex-start",
@@ -132,13 +150,12 @@ const DanhSachVe = () =>{
       color:"#919DBA",
       padding:"3px 2px 2px 10px",
     };
-
     const chuasudung = {
       backgroundColor: "#DEF7E0",
       border: "0.5px solid #03AC00",
       borderRadius: "4px",
       width: "70%",
-      height: "60%",
+      height: "70%",
       fontSize: "12px",
       display: "flex",
       justifyContent:"flex-start",
@@ -152,7 +169,7 @@ const DanhSachVe = () =>{
       border: "0.5px solid #FD5959",
       borderRadius: "4px",
       width: "50%",
-      height: "60%",
+      height: "70%",
       fontSize: "12px",
       display: "flex",
       justifyContent:"flex-start",
@@ -172,7 +189,7 @@ const DanhSachVe = () =>{
         <h1 className="title" onClick={()=>setOpenFilter(!openFilter)}>Danh sách vé</h1>
 
         <input className="search" type="text" placeholder="Tìm bằng số vé" onChange={(e)=>setSearchTerm(e.target.value)}/>
-        <button className="locve" onClick={()=>setOpenFilter(true)}>
+        <button className="locve" onClick={toggleOpenFilter}>
             <img src={filter}/>
             Lọc vé
         </button>
@@ -213,154 +230,156 @@ const DanhSachVe = () =>{
                 <th>Ngày xuất vé</th>
                 <th>Cổng checkin</th>
             </tr>
-            {!searchTerm &&
-            currentTickets.map((ticket) =>
-              <tr className="table-content">
-                  <td>{ticket.no}</td>
-                  <td>{ticket.id}</td>
-                  <td>{ticket.ticketNumber}</td>
-                  <td>{ticket.eventName}</td>
-                  <td>
-                      { ticket.useStatus === "Đã sử dụng" &&
-                      <Typography style={dasudung}>
-                        <img src={grayDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Chưa sử dụng" &&
-                      <Typography style={chuasudung}>
-                        <img src={greenDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Hết hạn" &&
-                      <Typography style={hethan}>
-                        <img src={redDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
+            {filterState && openFilterFirstTime == false &&
+              currentTickets.map((ticket) =>
+                <tr className="table-content" key={ticket.key}>
+                    <td>{ticket.no}</td>
+                    <td>{ticket.ticketID}</td>
+                    <td>{ticket.ticketNumber}</td>
+                    <td>{ticket.eventName}</td>
+                    <td>
+                        { ticket.useStatus === "Đã sử dụng" &&
+                        <Typography style={dasudung}>
+                          <img src={grayDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Chưa sử dụng" &&
+                        <Typography style={chuasudung}>
+                          <img src={greenDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Hết hạn" &&
+                        <Typography style={hethan}>
+                          <img src={redDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                      </td>
+                    <td>{ticket.useDate}</td>
+                    {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
+                    <td>{ticket.releaseDate}</td>
+                    <td>{ticket.checkinGate}</td>
+                    <td>
+                      <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.key, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                        <img src={changeDate} />
+                      </button>
                     </td>
-                  <td>{ticket.useDate}</td>
-                  {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
-                  <td>{ticket.releaseDate}</td>
-                  <td>{ticket.checkinGate}</td>
-                  <td>
-                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.key, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
-                      <img src={changeDate} />
-                    </button>
-                  </td>
-              </tr> 
-          )}
+                </tr> 
+            )}
 
-            {!filterState &&
-            currentTickets.map((ticket) =>
-              <tr className="table-content">
-                  <td>{ticket.no}</td>
-                  <td>{ticket.id}</td>
-                  <td>{ticket.ticketNumber}</td>
-                  <td>{ticket.eventName}</td>
-                  <td>
-                      { ticket.useStatus === "Đã sử dụng" &&
-                      <Typography style={dasudung}>
-                        <img src={grayDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Chưa sử dụng" &&
-                      <Typography style={chuasudung}>
-                        <img src={greenDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Hết hạn" &&
-                      <Typography style={hethan}>
-                        <img src={redDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
+            {filterState && !searchTerm &&
+              filterState.map((ticket) =>
+                <tr className="table-content">
+                    <td>{ticket.no}</td>
+                    <td>{ticket.ticketID}</td>
+                    <td>{ticket.ticketNumber}</td>
+                    <td>{ticket.eventName}</td>
+                    <td>
+                        { ticket.useStatus === "Đã sử dụng" &&
+                        <Typography style={dasudung}>
+                          <img src={grayDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Chưa sử dụng" &&
+                        <Typography style={chuasudung}>
+                          <img src={greenDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Hết hạn" &&
+                        <Typography style={hethan}>
+                          <img src={redDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                      </td>
+                    <td>{ticket.useDate}</td>
+                    {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
+                    <td>{ticket.releaseDate}</td>
+                    <td>{ticket.checkinGate}</td>
+                    <td>
+                      <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.key, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                        <img src={changeDate} />
+                      </button>
                     </td>
-                  <td>{ticket.useDate}</td>
-                  {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
-                  <td>{ticket.releaseDate}</td>
-                  <td>{ticket.checkinGate}</td>
-                  <td>
-                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
-                      <img src={changeDate} />
-                    </button>
-                  </td>
-              </tr> 
-          )}    
+                </tr> 
+            )
+            }
 
-          {filterState && !searchTerm &&
-            filterState.map((ticket) =>
-              <tr className="table-content">
-                  <td>{ticket.no}</td>
-                  <td>{ticket.id}</td>
-                  <td>{ticket.ticketNumber}</td>
-                  <td>{ticket.eventName}</td>
-                  <td>
-                      { ticket.useStatus === "Đã sử dụng" &&
-                      <Typography style={dasudung}>
-                        <img src={grayDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Chưa sử dụng" &&
-                      <Typography style={chuasudung}>
-                        <img src={greenDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Hết hạn" &&
-                      <Typography style={hethan}>
-                        <img src={redDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
+            {searchTerm && !filterState &&
+              output.map((ticket) =>
+                <tr className="table-content">
+                    <td>{ticket.no}</td>
+                    <td>{ticket.ticketID}</td>
+                    <td>{ticket.ticketNumber}</td>
+                    <td>{ticket.eventName}</td>
+                    <td>
+                        { ticket.useStatus === "Đã sử dụng" &&
+                        <Typography style={dasudung}>
+                          <img src={grayDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Chưa sử dụng" &&
+                        <Typography style={chuasudung}>
+                          <img src={greenDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Hết hạn" &&
+                        <Typography style={hethan}>
+                          <img src={redDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                      </td>
+                    <td>{ticket.useDate}</td>
+                    {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
+                    <td>{ticket.releaseDate}</td>
+                    <td>{ticket.checkinGate}</td>
+                    <td>
+                      <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.key, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                        <img src={changeDate} />
+                      </button>
                     </td>
-                  <td>{ticket.useDate}</td>
-                  {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
-                  <td>{ticket.releaseDate}</td>
-                  <td>{ticket.checkinGate}</td>
-                  <td>
-                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
-                      <img src={changeDate} />
-                    </button>
-                  </td>
-              </tr> 
-          )
-          }
+                </tr> 
+            )
+            }
 
-          {searchTerm && 
-            output.map((ticket) =>
-              <tr className="table-content">
-                  <td>{ticket.no}</td>
-                  <td>{ticket.id}</td>
-                  <td>{ticket.ticketNumber}</td>
-                  <td>{ticket.eventName}</td>
-                  <td>
-                      { ticket.useStatus === "Đã sử dụng" &&
-                      <Typography style={dasudung}>
-                        <img src={grayDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Chưa sử dụng" &&
-                      <Typography style={chuasudung}>
-                        <img src={greenDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
-                      { ticket.useStatus === "Hết hạn" &&
-                      <Typography style={hethan}>
-                        <img src={redDot} className="dots"/>
-                        {ticket.useStatus}
-                      </Typography>}
+            {searchTerm && filterState &&
+              output.map((ticket) =>
+                <tr className="table-content">
+                    <td>{ticket.no}</td>
+                    <td>{ticket.ticketID}</td>
+                    <td>{ticket.ticketNumber}</td>
+                    <td>{ticket.eventName}</td>
+                    <td>
+                        { ticket.useStatus === "Đã sử dụng" &&
+                        <Typography style={dasudung}>
+                          <img src={grayDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Chưa sử dụng" &&
+                        <Typography style={chuasudung}>
+                          <img src={greenDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                        { ticket.useStatus === "Hết hạn" &&
+                        <Typography style={hethan}>
+                          <img src={redDot} className="dots"/>
+                          {ticket.useStatus}
+                        </Typography>}
+                      </td>
+                    <td>{ticket.useDate}</td>
+                    {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
+                    <td>{ticket.releaseDate}</td>
+                    <td>{ticket.checkinGate}</td>
+                    <td>
+                      <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.key, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
+                        <img src={changeDate} />
+                      </button>
                     </td>
-                  <td>{ticket.useDate}</td>
-                  {/* // ticket.useDate.toDate().toDateString() khi kiểu là timestamp */}
-                  <td>{ticket.releaseDate}</td>
-                  <td>{ticket.checkinGate}</td>
-                  <td>
-                    <button className="changeDate" onClick={()=>{toggleChangeDate(ticket.id, ticket.ticketNumber, ticket.checkinGate, ticket.eventName, ticket.useDate)}}>
-                      <img src={changeDate} />
-                    </button>
-                  </td>
-              </tr> 
-          )
-          }
+                </tr> 
+            )
+            } 
         </table>
+
         {openChangeDate && !openFilter &&
-              <DoiNgaySuDung onClose={toggleChangeDate} setCloseChangeDate={toggleChangeDate} ticketID={ticketId} soVe={soVe} loaiVe={loaiVe} tenSuKien={tenSuKien} hanSuDung={hanSuDung}/>
+              <DoiNgaySuDung onClose={toggleChangeDate} setCloseChangeDate={toggleChangeDate} ticketID={ticketKey} soVe={soVe} loaiVe={loaiVe} tenSuKien={tenSuKien} hanSuDung={hanSuDung}/>
         }
         {openFilter &&
               <LocVe onClose={togglePopup} setParentState={setFilterState} setCloseFilter={togglePopup}/>

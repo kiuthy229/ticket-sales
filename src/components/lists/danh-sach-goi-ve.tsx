@@ -1,10 +1,9 @@
-import { render } from "@testing-library/react"
+
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useReducer, useState } from "react";
 import { db } from "../../firebase-config";
 import filter from "../../images/filter.png";
 import edit from "../../images/edit.png";
-import { makeStyles } from '@material-ui/core/styles';
 import {
   Table,
   Typography,
@@ -139,7 +138,7 @@ const DanhSachGoiVe = () =>{
       border: "0.5px solid #03AC00",
       borderRadius: "4px",
       width: "70%",
-      height: "60%",
+      height: "70%",
       fontSize: "12px",
       display: "flex",
       justifyContent:"flex-start",
@@ -153,7 +152,7 @@ const DanhSachGoiVe = () =>{
       border: "0.5px solid #FD5959",
       borderRadius: "4px",
       width: "70%",
-      height: "60%",
+      height: "70%",
       fontSize: "12px",
       display: "flex",
       justifyContent:"flex-start",
@@ -167,7 +166,7 @@ const DanhSachGoiVe = () =>{
       border: "0.5px solid #FD5959",
       borderRadius: "4px",
       width: "35%",
-      height: "60%",
+      height: "70%",
       fontSize: "12px",
       display: "flex",
       justifyContent:"flex-start",
